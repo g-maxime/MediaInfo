@@ -25,6 +25,8 @@ int main(int argc, char *argv[])
 {
     QStringList filesnames;
     int output = -1;
+
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
 #if defined(_WIN32) && defined(WINAPI_FAMILY) && (WINAPI_FAMILY==WINAPI_FAMILY_APP) //UWP Application
     QApplication::setAttribute(Qt::AA_ImmediateWidgetCreation, true);
     QApplication a(argc, argv);
