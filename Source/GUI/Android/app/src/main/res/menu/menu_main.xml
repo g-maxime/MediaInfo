@@ -9,8 +9,15 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item android:checkable="true"
+        android:id="@+id/action_nightmode"
+        android:title="@string/uimode_title" />
+
+    <!--<item android:checkable="true"
+        android:id="@+id/action_nightmode_auto"
+        android:title="@string/uimode_auto_title" />-->
+
     <item
         android:id="@+id/action_about"
         android:title="@string/about_title" />
-
 </menu>

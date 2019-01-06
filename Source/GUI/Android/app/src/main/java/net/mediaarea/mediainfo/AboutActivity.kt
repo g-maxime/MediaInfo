@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.net.Uri
 import android.content.Intent
+import androidx.appcompat.app.AppCompatDelegate
 
 import kotlinx.android.synthetic.main.activity_about.*
 

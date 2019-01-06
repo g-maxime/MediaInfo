@@ -22,13 +22,16 @@ import android.os.Environment
 import android.os.ParcelFileDescriptor
 import android.net.Uri
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.database.Cursor
 import android.provider.OpenableColumns
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.content.pm.PackageManager
 import android.view.*
+import androidx.appcompat.app.AppCompatDelegate
 
 import com.google.android.material.snackbar.Snackbar
 
@@ -189,6 +192,32 @@ class ReportListActivity : AppCompatActivity(), ReportActivityListener {
         handleIntent(intent)
     }
 
+    private fun applyUiMode() {
+        val sharedPreferences: SharedPreferences? = getSharedPreferences(getString(R.string.preferences_key), Context.MODE_PRIVATE)
+        sharedPreferences?.getString(getString(R.string.preferences_uimode_key), "OFF").let {
+            when (it) {
+                "OFF" -> {
+                    if (AppCompatDelegate.getDefaultNightMode()!=AppCompatDelegate.MODE_NIGHT_NO) {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                        recreate()
+                    }
+                }
+                "ON" -> {
+                    if (AppCompatDelegate.getDefaultNightMode()!=AppCompatDelegate.MODE_NIGHT_YES) {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                        recreate()
+                    }
+                }
+                /* "AUTO" -> {
+                    if (AppCompatDelegate.getDefaultNightMode()!=AppCompatDelegate.MODE_NIGHT_AUTO) {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO)
+                        recreate()
+                    }
+                } */
+            }
+        }
+    }
+
     private fun handleIntent(intent: Intent) {
         if (intent.action != null) {
             val action: String? = intent.action
@@ -234,6 +263,90 @@ class ReportListActivity : AppCompatActivity(), ReportActivityListener {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
 
+        val sharedPreferences: SharedPreferences? = getSharedPreferences(getString(R.string.preferences_key), Context.MODE_PRIVATE)
+        sharedPreferences?.getString(getString(R.string.preferences_uimode_key), "OFF").let {
+            if (it != null) {
+                when (it) {
+                    "OFF" -> {
+                        menu?.findItem(R.id.action_nightmode).let { item ->
+                            item?.setChecked(false)
+                        }
+                        /* menu?.findItem(R.id.action_nightmode_auto).let { item ->
+                            item?.setChecked(false)
+                        } */
+                    }
+                    "ON" -> {
+                       menu?.findItem(R.id.action_nightmode).let { item ->
+                           item?.setChecked(true)
+                       }
+                        /* menu?.findItem(R.id.action_nightmode_auto).let { item ->
+                            item?.setChecked(false)
+                        } */
+                    }
+                    /* "AUTO" -> {
+                        menu?.findItem(R.id.action_nightmode_auto).let { item ->
+                            item?.setChecked(true)
+                        }
+                        menu?.findItem(R.id.action_nightmode).let { item ->
+                            item?.setEnabled(false)
+                        }
+                    } */
+                }
+            }
+        }
+
+        menu?.findItem(R.id.action_nightmode).let {
+            it?.setOnMenuItemClickListener {
+                if (it.isChecked()) {
+                    it.setChecked(false)
+                    sharedPreferences
+                            ?.edit()
+                            ?.putString(getString(R.string.preferences_uimode_key), "OFF")
+                            ?.apply()
+
+                    applyUiMode()
+                } else {
+                    it.setChecked(true)
+                    sharedPreferences
+                            ?.edit()
+                            ?.putString(getString(R.string.preferences_uimode_key), "ON")
+                            ?.apply()
+
+                    applyUiMode()
+                }
+
+                true
+            }
+        }
+
+        /* menu?.findItem(R.id.action_nightmode_auto).let {
+            it?.setOnMenuItemClickListener {
+                if (it.isChecked()) {
+                    it.setChecked(false)
+                    sharedPreferences
+                            ?.edit()
+                            ?.putString(getString(R.string.preferences_uimode_key), "OFF")
+                            ?.apply()
+                    menu?.findItem(R.id.action_nightmode).let { item ->
+                        item?.setEnabled(true)
+                    }
+                    applyUiMode()
+                } else {
+                    it.setChecked(true)
+                    sharedPreferences
+                            ?.edit()
+                            ?.putString(getString(R.string.preferences_uimode_key), "AUTO")
+                            ?.apply()
+                    menu?.findItem(R.id.action_nightmode).let { item ->
+                        item?.setEnabled(false)
+                    }
+                    applyUiMode()
+                }
+
+                true
+            }
+        } */
+
         menu?.findItem(R.id.action_about).let {
             it?.setOnMenuItemClickListener {
                 val intent = Intent(this,  AboutActivity::class.java)
@@ -276,6 +389,8 @@ class ReportListActivity : AppCompatActivity(), ReportActivityListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_report_list)
+
+        applyUiMode()
 
         setSupportActionBar(tool_bar)
         tool_bar.title = title
