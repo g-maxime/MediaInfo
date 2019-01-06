@@ -19,6 +19,7 @@ import android.app.Activity
 import android.content.SharedPreferences
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.text.TextUtils
 import android.view.*
 
@@ -103,6 +104,13 @@ class ReportDetailFragment : Fragment() {
                             content += "</pre></body></html>"
                         } else {
                             content+=report
+                        }
+
+                        val currentUiMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+                        if (currentUiMode == Configuration.UI_MODE_NIGHT_YES) {
+                            val background=resources.getString(0+R.color.background_material_dark).removeRange(1, 3)
+                            val foreground=resources.getString(0+R.color.foreground_material_dark).removeRange(1, 3)
+                            content = content.replace("<body>", "<body style=\"background-color: ${background}; color: ${foreground};\">")
                         }
 
                         rootView.report_detail.loadDataWithBaseURL(null, content, "text/html", "utf-8", null)
