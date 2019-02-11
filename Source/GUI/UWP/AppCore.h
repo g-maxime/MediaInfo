@@ -68,7 +68,6 @@ namespace MediaInfo
 
         static Platform::String^ Get_Mime(Platform::String^ Name);
         static Platform::String^ Create_Report(Platform::String^ Path);
-        static Platform::String^ Convert_Report(Platform::String^ Report, Platform::String^ Format, bool Export);
         static void Add_Item_To_FutureAccessList(Windows::Storage::IStorageItem^ Item);
     };
 }

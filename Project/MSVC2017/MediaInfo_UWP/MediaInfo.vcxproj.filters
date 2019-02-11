@@ -15,6 +15,8 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\Source\GUI\UWP\App.xaml.cpp" />
     <ClCompile Include="..\..\..\Source\GUI\UWP\MainPage.xaml.cpp" />
+    <ClCompile Include="..\..\..\Source\GUI\UWP\EasyView.xaml.cpp" />
+    <ClCompile Include="..\..\..\Source\GUI\UWP\HtmlView.xaml.cpp" />
     <ClCompile Include="..\..\..\Source\GUI\UWP\AppCore.cpp" />
     <ClCompile Include="..\..\..\Source\GUI\UWP\Report.cpp" />
     <ClCompile Include="..\..\..\Source\GUI\UWP\ReportDataSource.cpp" />
@@ -24,15 +26,17 @@
     <ClCompile Include="..\..\..\Source\GUI\UWP\pch.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="App.xaml.h" />
-    <ClInclude Include="MainPage.xaml.h" />
-    <ClInclude Include="AppCore.h" />
-    <ClInclude Include="Report.h" />
-    <ClInclude Include="ReportDataSource.h" />
-    <ClInclude Include="ReportViewModel.h" />
-    <ClInclude Include="ReportPage.xaml.h" />
-    <ClInclude Include="AboutPage.xaml.h" />
+    <ClInclude Include="..\..\..\Source\GUI\UWP\AboutPage.xaml.h" />
+    <ClInclude Include="..\..\..\Source\GUI\UWP\AppCore.h" />
+    <ClInclude Include="..\..\..\Source\GUI\UWP\pch.h" />
+    <ClInclude Include="..\..\..\Source\GUI\UWP\App.xaml.h" />
+    <ClInclude Include="..\..\..\Source\GUI\UWP\MainPage.xaml.h" />
+    <ClInclude Include="..\..\..\Source\GUI\UWP\EasyView.xaml.h" />
+    <ClInclude Include="..\..\..\Source\GUI\UWP\HtmlView.xaml.h" />
+    <ClInclude Include="..\..\..\Source\GUI\UWP\Report.h" />
+    <ClInclude Include="..\..\..\Source\GUI\UWP\ReportDataSource.h" />
+    <ClInclude Include="..\..\..\Source\GUI\UWP\ReportPage.xaml.h" />
+    <ClInclude Include="..\..\..\Source\GUI\UWP\ReportViewModel.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\Source\Resource\Image\Assets\LockScreenLogo.scale-200.png">
@@ -172,5 +176,7 @@
     <Page Include="..\..\..\Source\GUI\UWP\MainPage.xaml" />
     <Page Include="..\..\..\Source\GUI\UWP\ReportPage.xaml" />
     <Page Include="..\..\..\Source\GUI\UWP\AboutPage.xaml" />
+    <Page Include="..\..\..\Source\GUI\UWP\HtmlView.xaml" />
+    <Page Include="..\..\..\Source\GUI\UWP\EasyView.xaml" />
   </ItemGroup>
 </Project>

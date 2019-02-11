@@ -56,6 +56,15 @@ MainPage::MainPage() : _CurrentReport(ref new ReportViewModel(nullptr)), _Resizi
         OpenFolder->Visibility=Windows::UI::Xaml::Visibility::Collapsed;
 
     // Populate views list menu
+    if (AppCore::View == L"Easy")
+    {
+        FontIcon^ Radio=ref new FontIcon();
+        Radio->FontFamily=ref new Media::FontFamily(L"Segoe MDL2 Assets");
+        Radio->Glyph=L"\uF137";
+
+        EasyMenuItem->Icon=Radio;
+    }
+
     for (View^ It : AppCore::ViewList)
     {
         MenuFlyoutItem^ Item=ref new MenuFlyoutItem();
@@ -344,10 +353,16 @@ void MainPage::ViewItem_Click(Object^ Sender, RoutedEventArgs^)
     MenuFlyoutItem^ Selected=safe_cast<MenuFlyoutItem^>(Sender);
     Platform::String^ SelectedView=safe_cast<Platform::String^>(Selected->Tag);
 
+    if (SelectedView == AppCore::View)
+        return;
+
     AppCore::View=SelectedView;
 
     for (MenuFlyoutItemBase^ It : ViewListMenu->Items)
     {
+        if (It->GetType()->FullName==TypeName(MenuFlyoutSeparator::typeid).Name)
+            continue;
+
         MenuFlyoutItem^ Item=safe_cast<MenuFlyoutItem^>(It);
         String^ Tag=safe_cast<String^>(Item->Tag);
 
@@ -364,8 +379,7 @@ void MainPage::ViewItem_Click(Object^ Sender, RoutedEventArgs^)
         Item->Icon=nullptr;
     }
 
-    ReportView->NavigateToString(CurrentReport->ReportHtml);
-    EnableContentTransitions();
+    Show_Report();
 }
 
 //---------------------------------------------------------------------------
@@ -382,7 +396,10 @@ void MainPage::Show_Report()
     }
     else
     {
-        ReportView->NavigateToString(CurrentReport->ReportHtml);
+        if (AppCore::View==L"Easy")
+            DetailContentPresenter->Content=ref new EasyView(_CurrentReport);
+        else
+            DetailContentPresenter->Content=ref new HtmlView(_CurrentReport);
 
         ViewListButton->IsEnabled=true;
         ExportButton->IsEnabled=true;
@@ -419,7 +436,8 @@ void MainPage::ListViewItem_Delete_Click(Platform::Object^ Sender, Windows::UI::
         ViewListButton->IsEnabled=false;
         ExportButton->IsEnabled=false;
         TitleText->Text=L"MediaInfo";
-        ReportView->NavigateToString(L"<html><head></head><body></body></html>");
+
+        DetailContentPresenter->Content=nullptr;
     }
 
     ReportDataSource::DeleteReport(ReportDataSource::GetReportById(Id));

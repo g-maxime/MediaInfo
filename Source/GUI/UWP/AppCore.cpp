@@ -112,6 +112,9 @@ void AppCore::View::set(Platform::String^ Value)
 //---------------------------------------------------------------------------
 Platform::String^ AppCore::Get_Mime(Platform::String^ Name)
 {
+    if (Name == L"Easy")
+        return L"Text/plain";
+
     for (::View^ It : ViewList)
     {
         if (It->Name==Name)
@@ -135,30 +138,6 @@ Platform::String^ AppCore::Create_Report(Platform::String^ Path)
     MI.Close();
 
     return ref new Platform::String(Report.c_str());
-}
-
-//---------------------------------------------------------------------------
-Platform::String^ AppCore::Convert_Report(Platform::String^ Report, Platform::String^ Format, bool Export)
-{
-    MediaInfoLib::MediaInfo MI;
-
-    MI.Option(__T("Inform"), Ztring().From_Unicode(Format->Data()));
-    MI.Option(__T("Inform_Compress"), __T(""));
-    MI.Option(__T("Input_Compressed"), __T("zlib+base64"));
-
-    if (Format=="Text" && !Export)
-        MI.Option(__T("Language"), __T("  Config_Text_ColumnSize;25"));
-
-    Ztring Input(Report->Data());
-
-    MI.Open_Buffer_Init(Input.To_UTF8().length(), 0L);
-    MI.Open_Buffer_Continue((int8u*)Input.To_UTF8().c_str(), Input.To_UTF8().length());
-    MI.Open_Buffer_Finalize();
-
-    Ztring Output=MI.Inform();
-    MI.Close();
-
-    return ref new Platform::String(Output.c_str());
 }
 
 //---------------------------------------------------------------------------

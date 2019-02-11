@@ -45,6 +45,7 @@ namespace MediaInfo
         void ViewItem_Click(Platform::Object^ Sender, Windows::UI::Xaml::RoutedEventArgs^ Event);
         void ExportButton_Click(Platform::Object^ Sender, Windows::UI::Xaml::RoutedEventArgs^ Event);
         void AboutButton_Click(Platform::Object^ Sender, Windows::UI::Xaml::RoutedEventArgs^ Event);
+        void Show_Report();
 
         void NavigateBackForWideState(bool UseTransition);
         bool ShouldGoToWideState();

@@ -46,7 +46,10 @@
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xe7b3;" />
                     </AppBarButton.Icon>
                     <Button.Flyout>
-                        <MenuFlyout x:Name="ViewListMenu" />
+                        <MenuFlyout x:Name="ViewListMenu">
+                            <MenuFlyoutItem x:Name="EasyMenuItem" Tag="Easy" Text="Easy" Click="ViewItem_Click" />
+                            <MenuFlyoutSeparator Tag="Separator" />
+                        </MenuFlyout>
                     </Button.Flyout>
                 </AppBarButton>
                 <AppBarButton x:Name="ExportButton" Label="Export" Click="ExportButton_Click">
@@ -63,7 +66,6 @@
             <ContentPresenter.ContentTransitions>
                 <TransitionCollection />
             </ContentPresenter.ContentTransitions>
-            <WebView x:Name="ReportView" EntranceNavigationTransitionInfo.IsTargetElement="True" />
         </ContentPresenter>
         <RelativePanel x:Name="AddFilePanel" Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Background="#44000000" Visibility="Collapsed">
             <SymbolIcon x:Name="AddSymbol" Symbol="Add" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.AlignHorizontalCenterWithPanel="True" Foreground="White" RenderTransformOrigin="0.5,0.5">

@@ -17,6 +17,9 @@
 #include "ReportDataSource.h"
 #include "ReportViewModel.h"
 
+#include "EasyView.xaml.h"
+#include "HtmlView.xaml.h"
+
 #include "AboutPage.xaml.h"
 #include "ReportPage.xaml.h"
 #include "MainPage.xaml.h"

@@ -51,6 +51,15 @@ ReportPage::ReportPage() : _BackRequestedEventRegistrationToken(), _SizeChangedE
     Window::Current->SetTitleBar(BackgroundElement);
 
     // Populate views list menu
+    if (AppCore::View == L"Easy")
+    {
+        FontIcon^ Radio=ref new FontIcon();
+        Radio->FontFamily=ref new Media::FontFamily(L"Segoe MDL2 Assets");
+        Radio->Glyph=L"\uF137";
+
+        EasyMenuItem->Icon=Radio;
+    }
+
     for (View^ It : AppCore::ViewList)
     {
         MenuFlyoutItem^ Item=ref new MenuFlyoutItem();
@@ -146,7 +155,7 @@ void ReportPage::Open_Files_Internal(Windows::Foundation::Collections::IVectorVi
                 CurrentReport->Source=NewReport;
                 TitleText->Text+=_CurrentReport->Name;
 
-                ReportView->NavigateToString(CurrentReport->ReportHtml);
+                Show_Report();
             }
             WaitPanel->Visibility=Windows::UI::Xaml::Visibility::Collapsed;
             SpinnerRing->IsActive=false;
@@ -248,7 +257,6 @@ void ReportPage::OnNavigatedTo(NavigationEventArgs^ e)
     if (e->Parameter)
     {
         CurrentReport->Source=safe_cast<Report^>(e->Parameter);
-        TitleText->Text+=_CurrentReport->Name;
     }
 
     _SizeChangedEventRegistrationToken=Window::Current->SizeChanged+=ref new WindowSizeChangedEventHandler(this, &ReportPage::Window_SizeChanged);
@@ -281,7 +289,7 @@ void ReportPage::PageRoot_Loaded(Object^, RoutedEventArgs^)
     if (ShouldGoToWideState())
         NavigateBackForWideState(true);
     else
-        ReportView->NavigateToString(CurrentReport->ReportHtml);
+        Show_Report();
 }
 
 //---------------------------------------------------------------------------
@@ -380,6 +388,9 @@ void ReportPage::ViewItem_Click(Object^ Sender, Windows::UI::Xaml::RoutedEventAr
 
     for (MenuFlyoutItemBase^ It : ViewListMenu->Items)
     {
+        if (It->GetType()->FullName==TypeName(MenuFlyoutSeparator::typeid).Name)
+            continue;
+
         MenuFlyoutItem^ Item=safe_cast<MenuFlyoutItem^>(It);
         String^ Tag=safe_cast<String^>(Item->Tag);
 
@@ -396,7 +407,21 @@ void ReportPage::ViewItem_Click(Object^ Sender, Windows::UI::Xaml::RoutedEventAr
         Item->Icon=nullptr;
     }
 
-    ReportView->NavigateToString(CurrentReport->ReportHtml);
+    Show_Report();
+}
+
+//---------------------------------------------------------------------------
+void ReportPage::Show_Report()
+{
+    if (AppCore::View == L"Easy")
+        DetailContentPresenter->Content=ref new EasyView(_CurrentReport);
+    else
+        DetailContentPresenter->Content=ref new HtmlView(_CurrentReport);
+
+        TitleText->Text=L"MediaInfo - " + CurrentReport->Name;
+
+        DetailContentPresenter->ContentTransitions->Clear();
+        DetailContentPresenter->ContentTransitions->Append(ref new EntranceThemeTransition());
 }
 
 //---------------------------------------------------------------------------
