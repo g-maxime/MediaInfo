@@ -347,6 +347,15 @@ class ReportListActivity : AppCompatActivity(), ReportActivityListener {
             }
         } */
 
+        menu?.findItem(R.id.action_plugins_store).let {
+            it?.setOnMenuItemClickListener {
+                val intent = Intent(this, PluginsStoreActivity::class.java)
+                startActivity(intent)
+
+                true
+            }
+        }
+
         menu?.findItem(R.id.action_about).let {
             it?.setOnMenuItemClickListener {
                 val intent = Intent(this,  AboutActivity::class.java)

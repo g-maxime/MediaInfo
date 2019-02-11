@@ -18,6 +18,10 @@
         android:title="@string/uimode_auto_title" />-->
 
     <item
+        android:id="@+id/action_plugins_store"
+        android:title="@string/plugins_store_title" />
+
+    <item
         android:id="@+id/action_about"
         android:title="@string/about_title" />
 </menu>

@@ -12,4 +12,5 @@
     <color name="colorAccent">#5C6bC0</color>
     <color name="colorBackground">#FFFFFF</color>
     <color name="colorForeground">#000000</color>
+    <color name="separatorLine">#d3d3d3</color>
 </resources>

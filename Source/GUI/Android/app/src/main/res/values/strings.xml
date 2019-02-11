@@ -32,6 +32,11 @@
     <string name="save_title">Save to directory</string>
     <string name="uimode_title">Night mode</string>
     <string name="uimode_auto_title">Night mode auto</string>
+    <string name="plugins_store_title">Plugins store</string>
+    <string name="store_text">blablabla blablabla blablabla blablabla blablabla blablabla blablabla blablabla</string>
+    <string name="buy_desc">Buy item</string>
+    <string name="buy_text">Buy</string>
+    <string name="purchased_text">Purchased</string>
     <!-- Preferences keys -->
     <string name="preferences_key">net.mediaarea.mediainfo.preferences</string>
     <string name="preferences_view_key">net.mediaarea.mediainfo.preferences_view</string>

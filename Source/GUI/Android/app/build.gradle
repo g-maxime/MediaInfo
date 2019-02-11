@@ -12,7 +12,7 @@ android {
         applicationId "net.mediaarea.mediainfo"
         minSdkVersion 14
         targetSdkVersion 28
-        versionCode 4
+        versionCode 5
         versionName "18.12"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -74,4 +74,6 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-compiler:2.0.0"
     // Legacy file picker
     implementation 'com.github.angads25:filepicker:1.1.1'
+    // Google Pay
+    implementation 'com.google.android.gms:play-services-wallet:16.0.1'
 }
