@@ -12,6 +12,7 @@
 #include "ZenLib/FileName.h"
 #include "Zenlib/Ztring.h"
 #include "ZenLib/ZtringList.h"
+#include "ZenLib/ZtringListList.h"
 
 //---------------------------------------------------------------------------
 using namespace MediaInfo;
@@ -56,7 +57,7 @@ MainPage::MainPage() : _CurrentReport(ref new ReportViewModel(nullptr)), _Resizi
         OpenFolder->Visibility=Windows::UI::Xaml::Visibility::Collapsed;
 
     // Populate views list menu
-    if (AppCore::View == L"Easy")
+    if (AppCore::View==L"Easy")
     {
         FontIcon^ Radio=ref new FontIcon();
         Radio->FontFamily=ref new Media::FontFamily(L"Segoe MDL2 Assets");
@@ -64,8 +65,16 @@ MainPage::MainPage() : _CurrentReport(ref new ReportViewModel(nullptr)), _Resizi
 
         EasyMenuItem->Icon=Radio;
     }
+    else if (AppCore::View==L"Sheet")
+    {
+        FontIcon^ Radio=ref new FontIcon();
+        Radio->FontFamily=ref new Media::FontFamily(L"Segoe MDL2 Assets");
+        Radio->Glyph=L"\uF137";
 
-    for (View^ It : AppCore::ViewList)
+        SheetMenuItem->Icon=Radio;
+    }
+
+    for (View^ It:AppCore::ViewList)
     {
         MenuFlyoutItem^ Item=ref new MenuFlyoutItem();
         Item->Tag=It->Name;
@@ -84,8 +93,6 @@ MainPage::MainPage() : _CurrentReport(ref new ReportViewModel(nullptr)), _Resizi
         ViewListMenu->Items->Append(Item);
     }
 }
-
-//---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
 // Functions
@@ -247,10 +254,18 @@ void MainPage::LayoutRoot_Loaded(Object^, RoutedEventArgs^)
 {
     ApplicationDataContainer^ LocalSettings=ApplicationData::Current->LocalSettings;
 
-    if (LocalSettings->Values->HasKey(L"FilePanel_Size"))
+    if (AppCore::View==L"Sheet")
     {
-        int FilePanel_Size=static_cast<uint32>(LocalSettings->Values->Lookup(L"FilePanel_Size"));
-        MasterColumn->Width=FilePanel_Size;
+        MasterColumn->Width=0;
+        SeparatorColumn->Width=0;
+    }
+    else {
+        if (LocalSettings->Values->HasKey(L"FilePanel_Size"))
+        {
+            int FilePanel_Size=static_cast<uint32>(LocalSettings->Values->Lookup(L"FilePanel_Size"));
+            MasterColumn->Width=FilePanel_Size;
+        }
+        SeparatorColumn->Width=11;
     }
 
     Update_Ui();
@@ -396,10 +411,35 @@ void MainPage::Show_Report()
     }
     else
     {
+        if (AppCore::View!=L"Sheet" && MasterColumn->Width==0)
+        {
+            int FilePanel_Size=320;
+            ApplicationDataContainer^ LocalSettings=ApplicationData::Current->LocalSettings;
+            if (LocalSettings->Values->HasKey(L"FilePanel_Size"))
+            {
+                FilePanel_Size=static_cast<uint32>(LocalSettings->Values->Lookup(L"FilePanel_Size"));
+                if (Window::Current->Bounds.Width<=FilePanel_Size)
+                    FilePanel_Size=320; // Reset to default
+            }
+
+            MasterColumn->Width=FilePanel_Size;
+            SeparatorColumn->Width=11;
+        }
+
         if (AppCore::View==L"Easy")
+        {
             DetailContentPresenter->Content=ref new EasyView(_CurrentReport);
+        }
+        else if (AppCore::View==L"Sheet")
+        {
+            MasterColumn->Width=0;
+            SeparatorColumn->Width=0;
+            DetailContentPresenter->Content=ref new SheetView(_CurrentReport);
+        }
         else
+        {
             DetailContentPresenter->Content=ref new HtmlView(_CurrentReport);
+        }
 
         ViewListButton->IsEnabled=true;
         ExportButton->IsEnabled=true;
@@ -486,7 +526,6 @@ void MainPage::ResizePanel_PointerReleased(Object^ Sender, PointerRoutedEventArg
             _Old_Pointer=nullptr;
         }
     }
-
 }
 
 //---------------------------------------------------------------------------
@@ -573,4 +612,12 @@ void MediaInfo::MainPage::Update_Ui()
         DetailContentPresenter->BorderBrush->Opacity=0;
         ResizePanel->Visibility=Windows::UI::Xaml::Visibility::Collapsed;
     }
+}
+
+void MainPage::LayoutRoot_SizeChanged(Object^ Sender, SizeChangedEventArgs^ Event)
+{
+    bool IsNarrow=Window::Current->Bounds.Width<720.0;
+
+    if (Window::Current->Bounds.Width<=MasterColumn->ActualWidth && !IsNarrow)
+        MasterColumn->Width=320; // Reset to default
 }

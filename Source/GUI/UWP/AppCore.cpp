@@ -86,19 +86,19 @@ IVectorView<View^>^ AppCore::ViewList::get()
 
     return ToReturn->GetView();
 }
-
 //---------------------------------------------------------------------------
 Platform::String^ AppCore::View::get()
 {
     ApplicationDataContainer^ LocalSettings=ApplicationData::Current->LocalSettings;
     Platform::String^ CurrentView=safe_cast<Platform::String^>(LocalSettings->Values->Lookup(L"View"));
 
-    if (!CurrentView->Length())
-        CurrentView=L"HTML";
+    if (!CurrentView||!CurrentView->Length())
+        CurrentView=L"Easy";
 
     return CurrentView;
 }
 
+//---------------------------------------------------------------------------
 void AppCore::View::set(Platform::String^ Value)
 {
     ApplicationDataContainer^ LocalSettings=ApplicationData::Current->LocalSettings;
@@ -112,7 +112,7 @@ void AppCore::View::set(Platform::String^ Value)
 //---------------------------------------------------------------------------
 Platform::String^ AppCore::Get_Mime(Platform::String^ Name)
 {
-    if (Name == L"Easy")
+    if (Name==L"Easy" || Name==L"Sheet")
         return L"Text/plain";
 
     for (::View^ It : ViewList)
@@ -122,6 +122,43 @@ Platform::String^ AppCore::Get_Mime(Platform::String^ Name)
     }
 
     return L"";
+}
+
+//---------------------------------------------------------------------------
+Platform::String^ AppCore::Get_Stream_Name(size_t StreamKind)
+{
+    switch (static_cast<stream_t>(StreamKind))
+    {
+    case Stream_General: return L"General";
+    case Stream_Video: return L"Video";
+    case Stream_Audio: return L"Audio";
+    case Stream_Text: return L"Text";
+    case Stream_Other: return L"Other";
+    case Stream_Image: return L"Image";
+    case Stream_Menu: return L"Menu";
+    default: return L"Unknown Stream";
+    }
+}
+
+//---------------------------------------------------------------------------
+size_t AppCore::Get_Stream_Id(Platform::String^ StreamKind)
+{
+    if (StreamKind==L"General")
+        return static_cast<size_t>(Stream_General);
+    else if (StreamKind==L"Video")
+        return static_cast<size_t>(Stream_Video);
+    else if (StreamKind==L"Audio")
+        return static_cast<size_t>(Stream_Audio);
+    else if (StreamKind==L"Text")
+        return static_cast<size_t>(Stream_Text);
+    else if (StreamKind==L"Other")
+        return static_cast<size_t>(Stream_Other);
+    else if (StreamKind==L"Image")
+        return static_cast<size_t>(Stream_Image);
+    else if (StreamKind==L"Menu")
+        return static_cast<size_t>(Stream_Menu);
+
+    return static_cast<size_t>(Stream_Max);
 }
 
 //---------------------------------------------------------------------------

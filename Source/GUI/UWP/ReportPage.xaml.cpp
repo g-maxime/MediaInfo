@@ -60,6 +60,15 @@ ReportPage::ReportPage() : _BackRequestedEventRegistrationToken(), _SizeChangedE
         EasyMenuItem->Icon=Radio;
     }
 
+    if (AppCore::View==L"Sheet")
+    {
+        FontIcon^ Radio=ref new FontIcon();
+        Radio->FontFamily=ref new Media::FontFamily(L"Segoe MDL2 Assets");
+        Radio->Glyph=L"\uF137";
+
+        SheetMenuItem->Icon=Radio;
+    }
+
     for (View^ It : AppCore::ViewList)
     {
         MenuFlyoutItem^ Item=ref new MenuFlyoutItem();
@@ -415,6 +424,8 @@ void ReportPage::Show_Report()
 {
     if (AppCore::View == L"Easy")
         DetailContentPresenter->Content=ref new EasyView(_CurrentReport);
+    else if (AppCore::View==L"Sheet")
+        DetailContentPresenter->Content=ref new SheetView(_CurrentReport);
     else
         DetailContentPresenter->Content=ref new HtmlView(_CurrentReport);
 

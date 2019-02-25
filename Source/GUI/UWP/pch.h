@@ -17,7 +17,14 @@
 #include "ReportDataSource.h"
 #include "ReportViewModel.h"
 
+#include "SheetViewHelpers.h"
+
+#include "DataGrid.xaml.h"
+#include "SheetEditFieldControl.xaml.h"
+#include "SheetEditDialog.xaml.h"
+
 #include "EasyView.xaml.h"
+#include "SheetView.xaml.h"
 #include "HtmlView.xaml.h"
 
 #include "AboutPage.xaml.h"

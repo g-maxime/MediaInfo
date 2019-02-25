@@ -68,6 +68,14 @@ EasyView::EasyView(ReportViewModel^ CurrentReport) : _CurrentReport(CurrentRepor
             Row->ColumnDefinitions->Append(ref new ColumnDefinition());
         }
 
+        Border^ BlockBorder=ref new Border();
+        BlockBorder->BorderThickness=1;
+        BlockBorder->BorderBrush=ref new SolidColorBrush(Windows::UI::Colors::Gray);
+        BlockBorder->Background=ref new SolidColorBrush(Windows::UI::Colors::WhiteSmoke);
+        BlockBorder->CornerRadius=CornerRadiusHelper::FromUniformRadius(5);
+        BlockBorder->Padding=ThicknessHelper::FromUniformLength(2);
+        BlockBorder->Margin=ThicknessHelper::FromUniformLength(5);
+
         Grid^ Block=ref new Grid();
         Block->RowDefinitions->Append(ref new RowDefinition());
         Block->RowDefinitions->Append(ref new RowDefinition());
@@ -106,9 +114,11 @@ EasyView::EasyView(ReportViewModel^ CurrentReport) : _CurrentReport(CurrentRepor
             Block->SetColumn(ContentBlock, Pos);
         }
 
-        Row->Children->Append(Block);
-        Row->SetRow(Block, 0);
-        Row->SetColumn(Block, Row->ColumnDefinitions->Size-1);
+        BlockBorder->Child=Block;
+
+        Row->Children->Append(BlockBorder);
+        Row->SetRow(BlockBorder, 0);
+        Row->SetColumn(BlockBorder, Row->ColumnDefinitions->Size-1);
     }
 
     return;
@@ -192,13 +202,13 @@ Platform::String^ EasyView::Tags_Get_General()
    
     while (Pos<Max)
     {
-        Platform::String^ Z1=_CurrentReport->Get(static_cast<size_t>(MediaInfoLib::Stream_General), 0, Pos);
-        Platform::String^ Options=_CurrentReport->Get(static_cast<size_t>(MediaInfoLib::Stream_General), 0, Pos, static_cast<size_t>(MediaInfoLib::Info_Options));
+        Platform::String^ Z1=_CurrentReport->GetI(static_cast<size_t>(MediaInfoLib::Stream_General), 0, Pos);
+        Platform::String^ Options=_CurrentReport->GetI(static_cast<size_t>(MediaInfoLib::Stream_General), 0, Pos, static_cast<size_t>(MediaInfoLib::Info_Options));
         if (Options->Length()>MediaInfoLib::InfoOption_ShowInInform && Options->Data()[MediaInfoLib::InfoOption_ShowInInform]==L'Y' && Z1->Length()>0)
         {
-            Platform::String^ Z2=_CurrentReport->Get(static_cast<size_t>(MediaInfoLib::Stream_General), 0, Pos, static_cast<size_t>(MediaInfoLib::Info_Name_Text));
+            Platform::String^ Z2=_CurrentReport->GetI(static_cast<size_t>(MediaInfoLib::Stream_General), 0, Pos, static_cast<size_t>(MediaInfoLib::Info_Name_Text));
             if (Z2->Length()==0)
-                Z2=_CurrentReport->Get(static_cast<size_t>(MediaInfoLib::Stream_General), 0, Pos, static_cast<size_t>(MediaInfoLib::Info_Name));
+                Z2=_CurrentReport->GetI(static_cast<size_t>(MediaInfoLib::Stream_General), 0, Pos, static_cast<size_t>(MediaInfoLib::Info_Name));
 
             Z2+=L": ";
             Z2+=Z1;
@@ -218,7 +228,7 @@ Platform::String^ EasyView::Tags_Get_General()
 }
 
 //---------------------------------------------------------------------------
-size_t MediaInfo::EasyView::Lines_Count_Get(size_t StreamKind)
+size_t EasyView::Lines_Count_Get(size_t StreamKind)
 {
     switch (StreamKind)
     {
@@ -231,7 +241,7 @@ size_t MediaInfo::EasyView::Lines_Count_Get(size_t StreamKind)
 }
 
 //---------------------------------------------------------------------------
-size_t MediaInfo::EasyView::Boxes_Count_Get(size_t StreamKind)
+size_t EasyView::Boxes_Count_Get(size_t StreamKind)
 {
     switch (StreamKind)
     {
@@ -244,7 +254,7 @@ size_t MediaInfo::EasyView::Boxes_Count_Get(size_t StreamKind)
 }
 
 //---------------------------------------------------------------------------
-Platform::String^ MediaInfo::EasyView::Title_Get(size_t StreamKind)
+Platform::String^ EasyView::Title_Get(size_t StreamKind)
 {
     switch (StreamKind)
     {

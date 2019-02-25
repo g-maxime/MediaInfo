@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "MediaInfo/MediaInfo.h"
+#include "MediaInfo/MediaInfo_Internal.h"
 
 //---------------------------------------------------------------------------
 namespace MediaInfo
@@ -56,8 +56,9 @@ namespace MediaInfo
 
         Platform::String^ Summary(size_t StreamKind, size_t StreamNumber);
         Platform::String^ Inform(Platform::String^ Format, bool Export);
-        Platform::String^ Get(size_t StreamKind, size_t StreamNumber, size_t Parameter);
-        Platform::String^ Get(size_t StreamKind, size_t StreamNumber, size_t Parameter,size_t InfoKind);
+        Platform::String^ Inform_Get(size_t StreamKind, size_t StreamNumber);
+        Platform::String^ GetI(size_t StreamKind, size_t StreamNumber, size_t Parameter);
+        Platform::String^ GetI(size_t StreamKind, size_t StreamNumber, size_t Parameter,size_t InfoKind);
         Platform::String^ Get(size_t StreamKind, size_t StreamNumber, Platform::String^ Parameter, size_t InfoKind, size_t SearchKind);
         Platform::String^ Get(size_t StreamKind, size_t StreamNumber, Platform::String^ Parameter, size_t InfoKind);
         Platform::String^ Get(size_t StreamKind, size_t StreamNumber, Platform::String^ Parameter);

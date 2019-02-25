@@ -67,6 +67,8 @@ namespace MediaInfo
         }
 
         static Platform::String^ Get_Mime(Platform::String^ Name);
+        static Platform::String^ Get_Stream_Name(size_t StreamKind);
+        static size_t Get_Stream_Id(Platform::String^ StreamKind);
         static Platform::String^ Create_Report(Platform::String^ Path);
         static void Add_Item_To_FutureAccessList(Windows::Storage::IStorageItem^ Item);
     };

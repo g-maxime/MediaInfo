@@ -35,6 +35,7 @@ namespace MediaInfo
         void On_File_DragLeave(Platform::Object^, Windows::UI::Xaml::DragEventArgs^);
         void On_File_Drop(Platform::Object^, Windows::UI::Xaml::DragEventArgs^ Event);
         void LayoutRoot_Loaded(Platform::Object^ Sender, Windows::UI::Xaml::RoutedEventArgs^ Event);
+        void LayoutRoot_SizeChanged(Platform::Object^ Sender, Windows::UI::Xaml::SizeChangedEventArgs^ Event);
         void OpenFiles_Click(Platform::Object^ Sender, Windows::UI::Xaml::RoutedEventArgs^ Event);
         void OpenFolder_Click(Platform::Object^ Sender, Windows::UI::Xaml::RoutedEventArgs^ Event);
         void ExportButton_Click(Platform::Object^ Sender, Windows::UI::Xaml::RoutedEventArgs^ Event);

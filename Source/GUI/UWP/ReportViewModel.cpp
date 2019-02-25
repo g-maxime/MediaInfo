@@ -112,16 +112,29 @@ Platform::String^ ReportViewModel::Inform(Platform::String ^ Format, bool Export
 
     Ztring Output=_MI.Inform();
 
+    _MI.Option(__T("Language"), __T("  Config_Text_ColumnSize;40")); // TODO: reset value
+
     return ref new Platform::String(Output.c_str());
 }
 
-Platform::String^ ReportViewModel::Get(size_t StreamKind, size_t StreamNumber, size_t Parameter)
+//---------------------------------------------------------------------------
+Platform::String^ ReportViewModel::Inform_Get(size_t StreamKind, size_t StreamPos)
 {
-    return Get(StreamKind, StreamNumber, Parameter, static_cast<size_t>(MediaInfoLib::Info_Text));
+    _MI.Option(__T("Inform_Compress"), __T(""));
+    _MI.Option(__T("Inform"), __T(""));
+
+    Ztring Output=_MI.Get(static_cast<stream_t>(StreamKind), StreamPos, __T("Inform"));
+
+    return ref new Platform::String(Output.c_str());
+}
+
+Platform::String^ ReportViewModel::GetI(size_t StreamKind, size_t StreamNumber, size_t Parameter)
+{
+    return GetI(StreamKind, StreamNumber, Parameter, static_cast<size_t>(MediaInfoLib::Info_Text));
 }
 
 //---------------------------------------------------------------------------
-Platform::String^ ReportViewModel::Get(size_t StreamKind, size_t StreamNumber, size_t Parameter, size_t InfoKind)
+Platform::String^ ReportViewModel::GetI(size_t StreamKind, size_t StreamNumber, size_t Parameter, size_t InfoKind)
 {
     Ztring Output=_MI.Get(static_cast<stream_t>(StreamKind), StreamNumber, Parameter, static_cast<info_t>(InfoKind));
 

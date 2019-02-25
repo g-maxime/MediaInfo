@@ -48,6 +48,7 @@
                     <Button.Flyout>
                         <MenuFlyout x:Name="ViewListMenu">
                             <MenuFlyoutItem x:Name="EasyMenuItem" Tag="Easy" Text="Easy" Click="ViewItem_Click" />
+                            <MenuFlyoutItem x:Name="SheetMenuItem" Tag="Sheet" Text="Sheet" Click="ViewItem_Click" />
                             <MenuFlyoutSeparator Tag="Separator" />
                         </MenuFlyout>
                     </Button.Flyout>
