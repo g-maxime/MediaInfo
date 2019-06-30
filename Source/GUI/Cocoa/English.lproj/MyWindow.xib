@@ -255,9 +255,10 @@
                                 <font key="font" metaFont="system"/>
                                 <segments>
                                     <segment toolTip="Easy View" image="NSIconViewTemplate" width="28" selected="YES"/>
-                                    <segment toolTip="Tree View" image="NSPathTemplate" width="28" tag="1"/>
+                                    <segment toolTip="Tree View" image="NSPathTemplate" width="28"/>
                                     <segment toolTip="Text View" image="NSListViewTemplate" width="28"/>
-                                    <segment label="…" toolTip="Other Views" width="28"/>
+                                    <segment label="⇆" toolTip="Compare View" width="28"/>
+                                    <segment label="..." toolTip="Other Views" width="28"/>
                                 </segments>
                             </segmentedCell>
                             <connections>

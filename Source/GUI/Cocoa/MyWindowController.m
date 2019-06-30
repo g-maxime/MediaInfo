@@ -108,9 +108,9 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
     int index = [control selectedSegment];
     if(index == control.segmentCount - 1) {
     }
-//	else if(index == kCompareTabIndex) {
-//		[self selectCompareTab:nil];
-//	}
+	else if(index == kCompareTabIndex) {
+		[self selectCompareTab:nil];
+	}
 	else if(index == kTextTabIndex) {
 		[self selectTextTab:nil];
 	}
@@ -514,7 +514,8 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 		}
 		
 		[comboController setContent:array];
-               [treeView setFiles:mediaList];
+		[compareView setFiles:mediaList];
+		[treeView setFiles:mediaList];
 
 		//display first added file
                [self setSelectedFileIndex:oldIndex+1];
