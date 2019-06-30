@@ -98,10 +98,10 @@ If a subscription is already active one year will be added to your current subsc
                         </textFieldCell>
                     </textField>
                     <box boxType="custom" borderType="none" borderWidth="0.0" id="S7w-C1-HHM">
-                        <rect key="frame" x="187" y="0.0" width="293" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <view key="contentView" id="Tpu-wS-vIK">
-                            <rect key="frame" x="0.0" y="0.0" width="293" height="480"/>
+                            <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="Rv1-Fb-Hmg">

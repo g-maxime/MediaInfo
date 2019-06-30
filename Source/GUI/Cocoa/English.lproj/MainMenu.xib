@@ -26,7 +26,7 @@
                             <menuItem isSeparatorItem="YES" id="236">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Subscribe" tag="11" id="K4A-dG-lv3">
+                            <menuItem title="Subscribe" hidden="YES" tag="11" id="K4A-dG-lv3">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="openSubscribePanel:" target="-1" id="1oU-Hc-kHT"/>

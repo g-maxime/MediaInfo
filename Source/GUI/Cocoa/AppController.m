@@ -32,7 +32,7 @@
 	filesToOpenAtStart = nil;
 	wc = nil;
 
-    if (@available(macOS 10.7, *)) {
+    if (@available(macOS 10.9, *)) {
         subscriptionManager = [SubscriptionManager shared];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeExternally) name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:[NSUbiquitousKeyValueStore defaultStore]];
 
@@ -47,7 +47,7 @@
 }
 
 - (void)dealloc {
-    if (@available(macOS 10.7, *)) {
+    if (@available(macOS 10.9, *)) {
         [[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
     }
 
@@ -93,7 +93,7 @@
 		[[wc window] registerForDraggedTypes:[NSArray arrayWithObjects:NSFilenamesPboardType,nil]];
 		[[wc window] makeKeyAndOrderFront:self];
 
-        if (@available(macOS 10.7, *)) {
+        if (@available(macOS 10.9, *)) {
             if(subscriptionManager.shouldNotifyUserForSubscriptionEnd) {
                 NSAlert *alert = [NSAlert alertWithMessageText:@"Your subscription has just ended." defaultButton:@"Renew" alternateButton:@"Close" otherButton:nil informativeTextWithFormat:@"Renew subscription?"];
                 if([alert runModal] == NSModalResponseOK) {

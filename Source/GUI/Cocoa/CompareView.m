@@ -154,7 +154,7 @@
             fileName=[NSString stringWithFormat:@"%@.%@", fileName, fileExtension];
         }
 
-        [column setTitle:fileName];
+        [[column headerCell] setTitle:fileName];
         [_outlineView addTableColumn:column];
     }
 

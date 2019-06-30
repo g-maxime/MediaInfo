@@ -159,10 +159,10 @@ static NSString *_subscriptionPurchaseFailedNotification = @"net.mediaarea.media
             NSInteger quantity = [subscription[@"quantity"] integerValue];
 
             if([new isGreaterThan:end]) {
-                end = [[NSCalendar currentCalendar] dateByAddingUnit:NSCalendarUnitMinute value:quantity*10 toDate:new options:nil];
+                end = [[NSCalendar currentCalendar] dateByAddingUnit:NSCalendarUnitYear value:quantity toDate:new options:nil];
             }
             else {
-                end = [[NSCalendar currentCalendar] dateByAddingUnit:NSCalendarUnitMinute value:quantity*10 toDate:end options:nil];
+                end = [[NSCalendar currentCalendar] dateByAddingUnit:NSCalendarUnitYear value:quantity toDate:end options:nil];
             }
         }
     }

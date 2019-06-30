@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0226605322C9F19C006CE084 /* MacCompare@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0226605222C9F19C006CE084 /* MacCompare@2x.png */; };
 		026834062296A4B20060542A /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 026834052296A4B20060542A /* StoreKit.framework */; };
 		026C61CE22A86824000D5045 /* MacCompare.png in Resources */ = {isa = PBXBuildFile; fileRef = 026C61CD22A86823000D5045 /* MacCompare.png */; };
 		0299EC64227C966B00D937F6 /* CompareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0299EC62227C966B00D937F6 /* CompareView.xib */; };
@@ -47,6 +48,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0226605222C9F19C006CE084 /* MacCompare@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MacCompare@2x.png"; sourceTree = "<group>"; };
 		0268340422949FB50060542A /* SubscriptionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SubscriptionManager.h; sourceTree = "<group>"; };
 		026834052296A4B20060542A /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		026C61CD22A86823000D5045 /* MacCompare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MacCompare.png; sourceTree = "<group>"; };
@@ -360,6 +362,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0226605222C9F19C006CE084 /* MacCompare@2x.png */,
 				0299EC62227C966B00D937F6 /* CompareView.xib */,
 				02B7FB4D17576A61002B92FE /* ServicesMenu.strings */,
 				4309800F154815B600E9F818 /* Localizable.strings */,
@@ -480,6 +483,7 @@
 				43BB5AA815336BEB002400F8 /* MainMenu.xib in Resources */,
 				43BB5AA515336BE2002400F8 /* MyWindow.xib in Resources */,
 				439533AD14E172C500537F55 /* mediainfo.icns in Resources */,
+				0226605322C9F19C006CE084 /* MacCompare@2x.png in Resources */,
 				43BB5AA215336722002400F8 /* About.xib in Resources */,
 				436A06D0150E732400F5E09A /* MediaInfoBig.png in Resources */,
 				43BB5AB315346845002400F8 /* Preferences.xib in Resources */,

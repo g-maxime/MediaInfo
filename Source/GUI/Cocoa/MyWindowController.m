@@ -72,7 +72,7 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 
     observers = [[NSMutableArray alloc] init];
 
-    if (@available(macOS 10.7, *)) {
+    if (@available(macOS 10.9, *)) {
         if([[SubscriptionManager shared] subscriptionActive]) {
             [self enableSubscription];
         }
@@ -82,6 +82,20 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
                 [self selectCompareTab:nil];
             }]];
         }
+
+        NSMenu *menu = [NSApp mainMenu];
+        if(menu) {
+            NSMenuItem *main = [menu itemWithTag:kApplicationMenuTag];
+            if(main && main.submenu) {
+                NSMenuItem *item = [main.submenu itemWithTag:kSubscribeMenuItemTag];
+                if(item) {
+                    [item setHidden:NO];
+                }
+            }
+        }
+    }
+    else {
+        [tabSelector setEnabled:NO forSegment:kCompareTabIndex];
     }
 }
 
@@ -149,7 +163,7 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 }
 
 -(IBAction)selectCompareTab:(id)sender {
-    if (!@available(macOS 10.7, *))
+    if (!@available(macOS 10.9, *))
         return;
 
     if([SubscriptionManager shared].subscriptionActive) {
