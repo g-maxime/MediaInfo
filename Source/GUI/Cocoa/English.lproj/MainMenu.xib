@@ -641,7 +641,7 @@
                                     <action selector="selectTextTab:" target="-1" id="601"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Compare" tag="51" hidden="NO" id="608">
+                            <menuItem title="Compare" tag="51" hidden="YES" id="608">
                                 <connections>
                                     <action selector="selectCompareTab:" target="-1" id="602"/>
                                 </connections>

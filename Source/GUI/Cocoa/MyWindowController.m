@@ -107,7 +107,10 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 
     int index = [control selectedSegment];
     if(index == control.segmentCount - 1) {
-	}
+    }
+//	else if(index == kCompareTabIndex) {
+//		[self selectCompareTab:nil];
+//	}
 	else if(index == kTextTabIndex) {
 		[self selectTextTab:nil];
 	}
@@ -145,6 +148,20 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
     }
 }
 
+-(IBAction)selectCompareTab:(id)sender {
+    if (!@available(macOS 10.7, *))
+        return;
+
+    if([SubscriptionManager shared].subscriptionActive) {
+        [self hideFileSelector];
+        [tabSelector setSelectedSegment:kCompareTabIndex];
+        [tabs selectTabViewItemAtIndex:kCompareTabIndex];
+    }
+    else {
+        [tabSelector setSelectedSegment:0];
+        [[SubscribeWindowController controller] show];
+    }
+}
 
 -(IBAction)selectEasyTab:(id)sender {
     [self showFileSelector];
@@ -531,6 +548,9 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 	//tree view
        [treeView setIndex:index];
 
+    // compare view
+    [compareView reload];
+
 	//recent items
 	NSString *filename = [mediaList filenameAtIndex:index];
 	[[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:[NSURL fileURLWithPath:filename]];
@@ -791,6 +811,9 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 		BOOL state = [tabs indexOfTabViewItem:tabs.selectedTabViewItem] == kTextTabIndex && _lastTextKind == Kind_Text ? YES : NO;
 		[menuItem setState: (state ? NSOnState : NSOffState)];
 	}
+    else if(action == @selector(selectCompareTab:)) {
+		[menuItem setState: ([tabs indexOfTabViewItem:tabs.selectedTabViewItem] == kCompareTabIndex ? NSOnState : NSOffState)];
+	}
 	else if(action == @selector(selectViewXML:)) {
 		BOOL state = [tabs indexOfTabViewItem:tabs.selectedTabViewItem] == kTextTabIndex && _lastTextKind == Kind_XML ? YES : NO;
 		[menuItem setState: (state ? NSOnState : NSOffState)];
@@ -859,10 +882,10 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 		return (mediaList != nil); //be careful if it's in background processing
 	}
     else if(action == @selector(selectNextTab:)) {
-        return mediaList && [mediaList count] && selectedFileIndex < [mediaList count] - 1;
+        return mediaList && [tabs indexOfTabViewItem:tabs.selectedTabViewItem] != kCompareTabIndex && [mediaList count] && selectedFileIndex < [mediaList count] - 1;
     }
     else if(action == @selector(selectPreviousTab:)) {
-        return mediaList && [mediaList count] && selectedFileIndex > 0;
+        return mediaList && [tabs indexOfTabViewItem:tabs.selectedTabViewItem] != kCompareTabIndex && [mediaList count] && selectedFileIndex > 0;
     }
     else if(action == @selector(closeFile:) || action == @selector(closeAllFiles:)) {
         return mediaList && [mediaList count];
@@ -873,14 +896,14 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 }
 
 -(IBAction)selectNextTab:(id)sender {
-    if(mediaList && [mediaList count] && selectedFileIndex < [mediaList count] - 1) {
+    if(mediaList && [tabs indexOfTabViewItem:tabs.selectedTabViewItem] != kCompareTabIndex && [mediaList count] && selectedFileIndex < [mediaList count] - 1) {
         [comboController selectNext:nil];
         [self setSelectedFileIndex:selectedFileIndex + 1];
     }
 }
 
 -(IBAction)selectPreviousTab:(id)sender {
-    if(mediaList && [mediaList count] && selectedFileIndex > 0) {
+    if(mediaList && [tabs indexOfTabViewItem:tabs.selectedTabViewItem] != kCompareTabIndex && [mediaList count] && selectedFileIndex > 0) {
         [comboController selectPrevious:nil];
         [self setSelectedFileIndex:selectedFileIndex - 1];
     }
