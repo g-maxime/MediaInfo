@@ -9,11 +9,17 @@
 #import "MyWindowController.h"
 #import "oMediaInfoList.h"
 #import "MediaInfoExporter.h"
-
+#import "SubscriptionManager.h"
+#import "SubscribeWindowController.h"
 #define kEasyTabIndex 0
 #define kTreeTabIndex 1
 #define kTextTabIndex 2
-#define kOtherViewsSelectorIndex 3
+#define kCompareTabIndex 3
+
+#define kApplicationMenuTag 10
+#define kSubscribeMenuItemTag 11
+#define kViewMenuTag 50
+#define kCompareMenuItemTag 51
 
 NSString* TextKindToNSString(ViewMenu_Kind kind)
 {
@@ -47,6 +53,10 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 
 -(void)dealloc {
 	[mediaList release];
+    for(id observer in observers) {
+        [[NSNotificationCenter defaultCenter] removeObserver:observer];
+    }
+    [observers release];
 	[super dealloc];
 }
 
@@ -55,8 +65,24 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 	[easyTable setBackgroundColor:[NSColor clearColor]];
 	[easyGeneralLinkButton setHidden:YES];
 	_lastTextKind = Kind_Text;
-	[tabSelector setMenu:otherViewsMenu forSegment:kOtherViewsSelectorIndex];
+	[tabSelector setMenu:otherViewsMenu forSegment:tabSelector.segmentCount - 1];
 	_exportSavePanel = nil;
+    fileSelectorIsHidden = NO;
+    subscriptionEnabled = NO;
+
+    observers = [[NSMutableArray alloc] init];
+
+    if (@available(macOS 10.7, *)) {
+        if([[SubscriptionManager shared] subscriptionActive]) {
+            [self enableSubscription];
+        }
+        else {
+            [observers addObject:[[NSNotificationCenter defaultCenter] addObserverForName:[SubscriptionManager subscriptionStateChangedNotification] object:[SubscriptionManager shared] queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+                [self enableSubscription];
+                [self selectCompareTab:nil];
+            }]];
+        }
+    }
 }
 
 #pragma mark -
@@ -77,34 +103,63 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 
 
 -(IBAction)clickOnViewSelector:(id)sender {
-	int segment = [(NSSegmentedControl*)sender selectedSegment];
-	if(segment == 3) {
-		//[NSMenu popUpContextMenu:otherViewsMenu withEvent:[NSApp currentEvent] forView:tabSelector];
+    NSSegmentedControl *control = (NSSegmentedControl *)sender;
+
+    int index = [control selectedSegment];
+    if(index == control.segmentCount - 1) {
 	}
-	else if(segment == 2) {
+	else if(index == kTextTabIndex) {
 		[self selectTextTab:nil];
 	}
-	else if(segment == 1) {
+	else if(index == kTreeTabIndex) {
 		[self selectTreeTab:nil];
 	}
-	else {
+	else if(index == kEasyTabIndex) {
 		[self selectEasyTab:nil];
 	}
 }
 
+-(void)showFileSelector {
+    if(fileSelectorIsHidden) {
+        [comboBox setHidden:NO];
+        [hline setHidden:NO];
+
+        NSRect frame = [tabs frame];
+        frame.size.height-=42;
+        [tabs setFrame:frame];
+
+        fileSelectorIsHidden = NO;
+    }
+}
+
+-(void)hideFileSelector {
+    if(!fileSelectorIsHidden) {
+        [comboBox setHidden:YES];
+        [hline setHidden:YES];
+
+        NSRect frame = [tabs frame];
+        frame.size.height+=42;
+        [tabs setFrame:frame];
+
+        fileSelectorIsHidden = YES;
+    }
+}
+
 
 -(IBAction)selectEasyTab:(id)sender {
+    [self showFileSelector];
 	[tabSelector setSelectedSegment:kEasyTabIndex];
 	[tabs selectTabViewItemAtIndex:kEasyTabIndex];
 }
 
 -(IBAction)selectTreeTab:(id)sender {
+    [self showFileSelector];
 	[tabSelector setSelectedSegment:kTreeTabIndex];
 	[tabs selectTabViewItemAtIndex:kTreeTabIndex];
 }
 
 -(IBAction)selectTextTab:(id)sender {
-	
+    [self showFileSelector];
 	if (_lastTextKind != Kind_Text)
 	{
 		_lastTextKind = Kind_Text;
@@ -116,8 +171,9 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 
 -(void)_selectViewOFKind:(ViewMenu_Kind)_kind
 {
+    [self showFileSelector];
 	_lastTextKind = _kind;
-	[tabSelector setSelectedSegment:kOtherViewsSelectorIndex];
+	[tabSelector setSelectedSegment:tabSelector.segmentCount - 1];
 	[self updateTextTabWithFileAtIndex:selectedFileIndex];
 	[tabs selectTabViewItemAtIndex:kTextTabIndex];
 }
@@ -349,6 +405,65 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 	
 }
 
+-(void)enableSubscription {
+    if(subscriptionEnabled)
+        return;
+
+    NSMenu *menu = [NSApp mainMenu];
+    if(menu) {
+        NSMenuItem *main = [menu itemWithTag:kApplicationMenuTag];
+        if(main && main.submenu) {
+            NSMenuItem *item = [main.submenu itemWithTag:kSubscribeMenuItemTag];
+            if(item) {
+                [item setTitle:@"Manage Subscription"];
+            }
+        }
+
+        NSMenuItem *view = [menu itemWithTag:kViewMenuTag];
+        if(view && view.submenu) {
+            NSMenuItem *item = [view.submenu itemWithTag:kCompareMenuItemTag];
+            [item setHidden:NO];
+        }
+    }
+
+    /* NSUInteger lastSegment = tabSelector.segmentCount - 1;
+    NSString *segmentLabel = [tabSelector labelForSegment:lastSegment];
+    NSImage *segmentImage = [tabSelector imageForSegment:lastSegment];
+    NSMenu *segmentMenu = [tabSelector menuForSegment:lastSegment];
+    CGFloat segmentWidth = [tabSelector widthForSegment:lastSegment];
+    NSImageScaling segmentScaling = [tabSelector imageScalingForSegment:lastSegment];
+    NSTextAlignment segmentAlignment = NSTextAlignmentCenter;
+    NSString *segmentTooltip = nil;
+    if (@available(macOS 10.13, *)) {
+        segmentAlignment = [tabSelector alignmentForSegment:lastSegment];
+        segmentTooltip = [tabSelector toolTipForSegment:lastSegment];
+    }
+
+    [tabSelector setLabel:@"⇆" forSegment:lastSegment];
+    [tabSelector setImage:nil forSegment:lastSegment];
+    [tabSelector setMenu:nil forSegment:lastSegment];
+    [tabSelector setWidth:28 forSegment:lastSegment];
+    [tabSelector setImageScaling:NSImageScaleProportionallyDown forSegment:lastSegment];
+    if (@available(macOS 10.13, *)) {
+        [tabSelector setAlignment:NSTextAlignmentCenter forSegment:lastSegment];
+        [tabSelector setToolTip:@"Compare View" forSegment:lastSegment];
+    }
+
+    [tabSelector setSegmentCount:tabSelector.segmentCount + 1];
+    lastSegment++;
+
+    [tabSelector setLabel:segmentLabel forSegment:lastSegment];
+    [tabSelector setImage:segmentImage forSegment:lastSegment];
+    [tabSelector setMenu:segmentMenu forSegment:lastSegment];
+    [tabSelector setWidth:segmentWidth forSegment:lastSegment];
+    [tabSelector setImageScaling:segmentScaling forSegment:lastSegment];
+    if(@available(macOS 10.13, *)) {
+        [tabSelector setAlignment:segmentAlignment forSegment:lastSegment];
+        [tabSelector setToolTip:segmentTooltip forSegment:lastSegment];
+    } */
+
+    subscriptionEnabled = YES;
+}
 
 #pragma mark -
 #pragma mark Processing
@@ -414,7 +529,7 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 	[self updateTextTabWithFileAtIndex:index];
 
 	//tree view
-       [treeView setIndex:selectedFileIndex];
+       [treeView setIndex:index];
 
 	//recent items
 	NSString *filename = [mediaList filenameAtIndex:index];
@@ -667,10 +782,10 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 	SEL action = [menuItem action];
 
     if(action == @selector(selectEasyTab:)) {
-        [menuItem setState: ([tabSelector selectedSegment] == kEasyTabIndex ? NSOnState : NSOffState)];
+        [menuItem setState: ([tabs indexOfTabViewItem:tabs.selectedTabViewItem] == kEasyTabIndex ? NSOnState : NSOffState)];
     }
     else if(action == @selector(selectTreeTab:)) {
-		[menuItem setState: ([tabSelector selectedSegment] == kTreeTabIndex ? NSOnState : NSOffState)];
+		[menuItem setState: ([tabs indexOfTabViewItem:tabs.selectedTabViewItem] == kTreeTabIndex ? NSOnState : NSOffState)];
 	}
 	else if(action == @selector(selectTextTab:)) {
 		BOOL state = [tabs indexOfTabViewItem:tabs.selectedTabViewItem] == kTextTabIndex && _lastTextKind == Kind_Text ? YES : NO;
