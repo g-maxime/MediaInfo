@@ -250,7 +250,6 @@
 			</dict>
 			<key>NSSendFileTypes</key>
 			<array>
-				<string>public.movie</string>
 				<string>public.video</string>
 				<string>public.audio</string>
 				<string>public.subtitle</string>
