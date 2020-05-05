@@ -4,10 +4,10 @@
 %global libmediainfo_version        20.03
 %global libmediainfo_version_major  20
 %global libmediainfo_version_minor  03
-%global libzen_version              0.4.37
+%global libzen_version              0.4.38
 %global libzen_version_major        0
 %global libzen_version_minor        4
-%global libzen_version_release      37
+%global libzen_version_release      38
 
 %if 0%{?fedora_version} || 0%{?centos_version} >= 600 || 0%{?rhel_version} >= 600
 %global libmediainfo_name libmediainfo

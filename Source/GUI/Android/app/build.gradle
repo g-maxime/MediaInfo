@@ -15,7 +15,7 @@ android {
         applicationId "net.mediaarea.mediainfo"
         minSdkVersion 14
         targetSdkVersion 29
-        versionCode 11
+        versionCode 15
         versionName "20.03.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
