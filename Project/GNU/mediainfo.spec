@@ -1,4 +1,4 @@
-%global mediainfo_version           20.08
+%global mediainfo_version           20.08.1
 %global mediainfo_version_major     20
 %global mediainfo_version_minor     08
 %global libmediainfo_version        20.08
