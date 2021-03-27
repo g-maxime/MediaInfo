@@ -184,7 +184,15 @@ if test "$with_wxwidgets" = "yes"; then
             WxVersion="2.9.0"
         ;;
     esac
-    AM_PATH_WXCONFIG("$WxVersion", WxSystemLibs=1, WxSystemLibs=0, [base], --unicode=$enable_unicode --static=$with_wx_static)
+
+    m4_ifdef([WX_CONFIG_CHECK], [
+        WX_CONFIG_CHECK("$WxVersion", WxSystemLibs=1, WxSystemLibs=0, [base], --unicode=$enable_unicode --static=$with_wx_static)
+    ], [
+        m4_ifdef([AM_PATH_WXCONFIG], [
+            AM_PATH_WXCONFIG("$WxVersion", WxSystemLibs=1, WxSystemLibs=0, [base], --unicode=$enable_unicode --static=$with_wx_static)
+        ], [])
+    ])
+
     if test "$WxSystemLibs" != 1; then
         dnl Searching builtin libs
         WxBuiltInSearchGoodBuild
