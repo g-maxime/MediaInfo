@@ -41,8 +41,8 @@ function Make_image() {
 }
 
 # Detect host
-if ! grep "CentOS release 6\..*" /etc/centos-release ; then
-    echo "This script is supposed to be run on a CentOS 6 container or chroot"
+if ! grep "CentOS Linux release 7\..*" /etc/centos-release ; then
+    echo "This script is supposed to be run on a CentOS 7 container or chroot"
     exit 1
 fi
 
@@ -66,17 +66,17 @@ sed -i "s/-x86_64/-$ARCH/g" functions.sh
 source ./functions.sh
 
 # Add EPEL repository
-curl -L -O https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+curl -L -O https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 rpm -i --nodeps epel-release-*.rpm
 
 # Install build and AppImage dependencies
 yum install -y file wget tar fuse-libs fuse gcc-c++ pkgconfig libtool automake autoconf \
-               git zlib-devel libcurl-devel cairo-devel wxGTK-devel
+               make git zlib-devel libcurl-devel cairo-devel wxGTK-devel
 
 # Compile ZenLib
 if test -e ZenLib/Project/GNU/Library; then
     pushd ZenLib/Project/GNU/Library
-    autoreconf -i
+    autoreconf -if
 
     if [ "$ARCH" == "x86_64" ] ; then
         ./configure --enable-shared --disable-static --prefix=/usr --libdir=/usr/lib64
@@ -106,7 +106,7 @@ fi
 # Compile MediaInfoLib
 if test -e MediaInfoLib/Project/GNU/Library; then
     pushd MediaInfoLib/Project/GNU/Library
-    autoreconf -i
+    autoreconf -if
 
     if [ "$ARCH" == "x86_64" ] ; then
         ./configure --enable-shared --disable-static --prefix=/usr --libdir=/usr/lib64 --with-libcurl
@@ -138,7 +138,7 @@ fi
 if test -e MediaInfo; then
     # CLI
     pushd MediaInfo/Project/GNU/CLI
-    autoreconf -i
+    autoreconf -if
     ./configure --prefix=$PREFIX
 
     if test ! -e Makefile; then
@@ -158,7 +158,7 @@ if test -e MediaInfo; then
 
     # GUI
     pushd MediaInfo/Project/GNU/GUI
-    autoreconf -i
+    autoreconf -if
     ./configure --prefix=$PREFIX
 
     if test ! -e Makefile; then
