@@ -2241,6 +2241,12 @@ object MainF: TMainF
         RadioItem = True
         OnClick = M_View_NISO_Z39_87Click
       end
+      object M_View_Graph_Adm_Svg: TMenuItem
+        AutoCheck = True
+        Caption = 'ADM graph'
+        RadioItem = True
+        OnClick = M_View_Graph_Adm_SvgClick
+      end
       object M_View_Custom: TMenuItem
         AutoCheck = True
         Caption = 'Custom'
@@ -3961,6 +3967,10 @@ object MainF: TMainF
     end
     object ToolBar_View_NISO_Z39_87: TMenuItem
       Caption = 'NISO Z39.87'
+      RadioItem = True
+    end
+    object ToolBar_View_Graph_Adm_Svg: TMenuItem
+      Caption = 'ADM graph'
       RadioItem = True
     end
     object ToolBar_View_reVTMD: TMenuItem

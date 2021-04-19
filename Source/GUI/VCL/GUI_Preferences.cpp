@@ -217,11 +217,17 @@ void __fastcall TPreferencesF::General_Output_SelChange(TObject *Sender)
     }
     if (General_Output_Sel->ItemIndex==20)
     {
-        Prefs->Config(__T("Output"))=__T("reVTMD");
+        Prefs->Config(__T("Output"))=__T("Graph_Adm_Svg");
         MainF->Page->ActivePage=MainF->Page_Custom;
         General_Output_More->Visible=false;
     }
     if (General_Output_Sel->ItemIndex==21)
+    {
+        Prefs->Config(__T("Output"))=__T("reVTMD");
+        MainF->Page->ActivePage=MainF->Page_Custom;
+        General_Output_More->Visible=false;
+    }
+    if (General_Output_Sel->ItemIndex==22)
     {
         Prefs->Config(__T("Output"))=__T("Custom");
         MainF->Page->ActivePage=MainF->Page_Custom;
@@ -610,6 +616,7 @@ void __fastcall TPreferencesF::GUI_Configure()
     General_Output_Sel->Items->Add("FIMS_1.2");
     General_Output_Sel->Items->Add("FIMS_1.3");
     General_Output_Sel->Items->Add("NISO_Z39.87");
+    General_Output_Sel->Items->Add("ADM graph");
     General_Output_Sel->Items->Add("reVTMD");
     General_Output_Sel->Items->Add(Prefs->Translate(__T("Custom")).c_str());
          if (Prefs->Config(__T("Output"))==__T("Basic"))      General_Output_Sel->ItemIndex=0;
@@ -632,8 +639,9 @@ void __fastcall TPreferencesF::GUI_Configure()
     else if (Prefs->Config(__T("Output"))==__T("FIMS_1.2")) General_Output_Sel->ItemIndex=17;
     else if (Prefs->Config(__T("Output"))==__T("FIMS_1.3")) General_Output_Sel->ItemIndex=18;
     else if (Prefs->Config(__T("Output"))==__T("NISO_Z39.87")) General_Output_Sel->ItemIndex=19;
-    else if (Prefs->Config(__T("Output"))==__T("reVTMD"))     General_Output_Sel->ItemIndex=20;
-    else if (Prefs->Config(__T("Output"))==__T("Custom"))     General_Output_Sel->ItemIndex=21;
+    else if (Prefs->Config(__T("Output"))==__T("Graph_Adm_Svg")) General_Output_Sel->ItemIndex=20;
+    else if (Prefs->Config(__T("Output"))==__T("reVTMD"))     General_Output_Sel->ItemIndex=21;
+    else if (Prefs->Config(__T("Output"))==__T("Custom"))     General_Output_Sel->ItemIndex=22;
     //-Advanced
     Setup_Advanced->Caption=Prefs->Translate(__T("Advanced")).c_str();
     CB_InscrireShell->Caption=Prefs->Translate(__T("Shell extension")).c_str();

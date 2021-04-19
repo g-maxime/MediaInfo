@@ -228,6 +228,7 @@ void __fastcall TMainF::GUI_Configure()
     else if (Prefs->Config(__T("Output"))==__T("FIMS_1.2")) {M_View_FIMS_1_2Click(NULL); M_View_FIMS_1_2->Checked=true;}
     else if (Prefs->Config(__T("Output"))==__T("FIMS_1.3")) {M_View_FIMS_1_3Click(NULL); M_View_FIMS_1_3->Checked=true;}
     else if (Prefs->Config(__T("Output"))==__T("NISO_Z39.87")) {M_View_NISO_Z39_87Click(NULL); M_View_NISO_Z39_87->Checked=true;}
+    else if (Prefs->Config(__T("Output"))==__T("Graph_Adm_Svg")) {M_View_Graph_Adm_SvgClick(NULL); M_View_Graph_Adm_Svg->Checked=true;}
     else if (Prefs->Config(__T("Output"))==__T("reVTMD")) {M_View_reVTMDClick(NULL); M_View_reVTMD->Checked=true;}
     else if (Prefs->Config(__T("Output"))==__T("Custom")) {M_View_CustomClick(NULL); M_View_Custom->Checked=true;}
 
@@ -865,11 +866,88 @@ void __fastcall TMainF::Refresh(TTabSheet *Page)
             I->Option_Static(__T("Inform"), __T("reVTMD"));
         else if (M_View_NISO_Z39_87->Checked)
             I->Option_Static(__T("Inform"), __T("NISO_Z39.87"));
-        else
+		else if (M_View_Graph_Adm_Svg->Checked)
+			I->Option_Static(__T("Inform"), __T("Graph_Adm_Svg"));
+		else
             I->Option_Static(__T("Inform"), Prefs->Details[Prefs_Custom].Read());
         Ztring S1=I->Inform();
         if (S1.empty())
-            S1=Prefs->Translate(__T("At least one file")).c_str();
+			S1=Prefs->Translate(__T("At least one file")).c_str();
+
+		if (I->Option_Static(__T("Inform_Get"), __T(""))==__T("Graph_Adm_Svg"))
+		{
+			S1=Ztring();
+			for (size_t Pos=0; Pos<I->Count_Get(); Pos++)
+			{
+				Ztring Svg=I->Inform(Pos);
+				size_t Pos=Svg.find(__T("<svg"));
+				if (Pos!=std::string::npos)
+					Svg=Svg.substr(Pos);
+				S1+=(Pos?__T("<br/>"):__T(""))+Svg;
+			}
+			Ztring Template=__T("<html>\n\
+  <head>\n\
+	<meta http-equiv='X-UA-Compatible' content='IE=edge'>\n\
+	<meta charset='utf-8'>\n\
+	<style type='text/css'>\n\
+	  svg { overflow: hidden }\n\
+	  .controls { position: fixed; top: 1em; right: 1em; opacity: 0.5; border-radius: 3px; background-color: lightblue; }\n\
+	</style>\n\
+  </head>\n\
+  <body>\n\
+	<div class='controls'>\n\
+	  <svg onclick='zoom(-10)' width='24px' height='24px' viewBox='0 0 24 24' fill='#000000'>\n\
+		<path d='M0 0h24v24H0V0z' fill='none'/>\n\
+		<path d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14zM7 9h5v1H7z'/>\n\
+	  </svg>\n\
+	  <svg onclick='zoom(10)' width='24px' height='24px' viewBox='0 0 24 24' fill='#000000'>\n\
+		<path d='M0 0h24v24H0V0z' fill='none'/>\n\
+		<path d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14zm.5-7H9v2H7v1h2v2h1v-2h2V9h-2z'/>\n\
+	  </svg>\n\
+	</div>\n\
+	<div id='svg'>\n\
+@SVG@\n\
+	</div>\n\
+	<script type='text/javascript'>\n\
+	  function zoom(value) {\n\
+		var container = document.getElementById('svg');\n\
+		var svgs = container.getElementsByTagName('svg');\n\
+		for (var i = 0; i < svgs.length; i++) {\n\
+		  svgs[i].width.baseVal.value = svgs[i].width.baseVal.value * (100 + value) / 100;\n\
+		  svgs[i].height.baseVal.value = svgs[i].height.baseVal.value * (100 + value) / 100;\n\
+		}\n\
+	  }\n\
+	</script>\n\
+  </body>\n\
+</html>");
+			Template.FindAndReplace(__T("@SVG@"), S1);
+            S1=Template;
+			/*if (File::Exists(Prefs->BaseFolder+__T("\\Graph\\Template.html")))
+			{
+				File F(Prefs->BaseFolder+__T("\\Graph\\Template.html"));
+				int8u* Buffer=new int8u[(size_t)F.Size_Get()+1];
+				size_t Count=F.Read(Buffer, (size_t)F.Size_Get());
+				if (Count==Error)
+				{
+					delete[] Buffer; //Buffer=NULL;
+					S1=__T("Unable to load graph template");
+				}
+				else
+				{
+					Buffer[Count]=(int8u)'\0';
+					Ztring Template=Ztring().From_UTF8((char*)Buffer);
+					if (Template.FindAndReplace(__T("@SVG@"), S1)==0)
+						S1=__T("Invalid template");
+					else
+						S1=Template;
+
+				}
+				delete[] Buffer; //Buffer=NULL;
+			}
+			else
+				S1=__T("Graph template not found");*/
+		}
+
         if (S1.size()>1 && S1[0]=='<' && S1[1]=='h')
         {
             //Supposing this is HTML
@@ -1178,6 +1256,14 @@ void __fastcall TMainF::M_View_NISO_Z39_87Click(TObject *Sender)
 {
     M_View_NISO_Z39_87->Checked=true;
     ToolBar_View_NISO_Z39_87->Checked=true;
+    ChangePage(Page_Custom);
+}
+
+//---------------------------------------------------------------------------
+void __fastcall TMainF::M_View_Graph_Adm_SvgClick(TObject *Sender)
+{
+    M_View_Graph_Adm_Svg->Checked=true;
+    ToolBar_View_Graph_Adm_Svg->Checked=true;
     ChangePage(Page_Custom);
 }
 

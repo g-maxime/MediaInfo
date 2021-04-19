@@ -595,6 +595,19 @@ object ExportF: TExportF
           TabOrder = 0
           OnClick = Export_NISO_Z39_87_SideCarClick
         end
+      end
+      object Export_Graph_Adm_Svg: TTabSheet
+        Caption = 'ADM graph'
+        object Export_Graph_Adm_Svg_SideCar: TCheckBox
+          Left = 0
+          Top = 9
+          Width = 597
+          Height = 18
+          Caption = 'Sidecar file (filename.Graph_Adm.svg)'
+          TabOrder = 0
+          OnClick = Export_Graph_Adm_Svg_SideCarClick
+        end
+      end
       object Export_reVTMD: TTabSheet
         Caption = 'reVTMD'
         object Export_reVTMD_SideCar: TCheckBox
@@ -606,7 +619,6 @@ object ExportF: TExportF
           TabOrder = 0
           OnClick = Export_reVTMD_SideCarClick
         end
-      end
       end
       object Export_Custom: TTabSheet
         Caption = 'Custom'
