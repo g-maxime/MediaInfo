@@ -733,7 +733,7 @@ void TExportF::Export_Run()
         {
             for (size_t Pos=0; Pos<ToExport->Count_Get(); Pos++)
             {
-                Text=Graph().Render_Svg(ToExport->Inform(Pos)).c_str();
+                Text=ToExport->Inform(Pos).c_str();
                 File F;
                 F.Create(Ztring(ToExport->Get(Pos, Stream_General, 0, __T("CompleteName")).c_str())+__T(".Graph_Adm.svg"));
                 F.Write(Text);
