@@ -653,6 +653,12 @@
                                     <action selector="selectCompareTab:" target="-1" id="602"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="HTML" id="baz-P1-eG7">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="selectViewHTML:" target="-1" id="sVX-d1-Hd5"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="XML" id="o0W-Nz-FBX">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
@@ -747,6 +753,12 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="selectViewNISO_Z39_87:" target="-1" id="gaB-0q-gls"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="ADM graph" id="BlK-Ms-sya">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="selectViewGraph_Adm_Svg:" target="-1" id="d1I-dO-g9e"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="599"/>

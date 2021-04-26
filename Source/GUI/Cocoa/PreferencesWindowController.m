@@ -112,8 +112,9 @@ static PreferencesWindowController *prefsCtrl = nil;
 	[self addViewToComboWithTitle:@"Tree" andValue:@"Tree"];
 	[self addViewToComboWithTitle:@"Compare" andValue:@"Compare"];
 	[self addViewToComboWithTitle:@"Text" andValue:@"Text"];
-	[self addViewToComboWithTitle:@"XML" andValue:@"JSON"];
-	[self addViewToComboWithTitle:@"XML" andValue:@"JSON"];
+    [self addViewToComboWithTitle:@"HTML" andValue:@"HTML"];
+	[self addViewToComboWithTitle:@"XML" andValue:@"XML"];
+	[self addViewToComboWithTitle:@"JSON" andValue:@"JSON"];
 	[self addViewToComboWithTitle:@"MPEG-7" andValue:@"MPEG-7"];
 	[self addViewToComboWithTitle:@"PBCore" andValue:@"PBCore"];
 	[self addViewToComboWithTitle:@"PBCore2" andValue:@"PBCore2"];
@@ -128,6 +129,7 @@ static PreferencesWindowController *prefsCtrl = nil;
 	[self addViewToComboWithTitle:@"FIMS 1.3" andValue:@"FIMS_1.3"];
 	[self addViewToComboWithTitle:@"reVTMD" andValue:@"reVTMD"];
 	[self addViewToComboWithTitle:@"NISO Z39.87" andValue:@"NISO_Z39.87"];
+	[self addViewToComboWithTitle:@"ADM graph" andValue:@"Graph_Adm_Svg"];
 
 	NSString *savedView = [[NSUserDefaults standardUserDefaults] objectForKey:@"defaultView"];
 	

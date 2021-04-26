@@ -15,7 +15,8 @@
 #define kEasyTabIndex 0
 #define kTreeTabIndex 1
 #define kTextTabIndex 2
-#define kCompareTabIndex 3
+#define kHTMLTabIndex 3
+#define kCompareTabIndex 4
 
 #define kApplicationMenuTag 10
 #define kSubscribeMenuItemTag 11
@@ -47,6 +48,7 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 		case Kind_FIMS_1_3:		_ret = @"FIMS_1.3"; break;
 		case Kind_reVTMD:		_ret = @"reVTMD"; break;
 		case Kind_NISO_Z39_87:		_ret = @"NISO_Z39.87"; break;
+		case Kind_Graph_Adm_Svg:		_ret = @"Graph_Adm_Svg"; break;
 		case Kind_Text:
 								_ret = @"";
 		default:				break;
@@ -92,6 +94,8 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
                 [self selectCompareTab:nil];
             else if ([defaultView isEqualToString:@"Text"])
                 [self selectTextTab:nil];
+            else if ([defaultView isEqualToString:@"HTML"])
+                [self selectViewHTML:nil];
             else if ([defaultView isEqualToString:@"XML"])
                 [self selectViewXML:nil];
             else if ([defaultView isEqualToString:@"JSON"])
@@ -124,6 +128,8 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
                 [self selectViewReVTMD:nil];
             else if ([defaultView isEqualToString:@"NISO_Z39.87"])
                 [self selectViewNISO_Z39_87:nil];
+            else if ([defaultView isEqualToString:@"Graph_Adm_Svg"])
+                [self selectViewGraph_Adm_Svg:nil];
             }
         else {
             [observers addObject:[[NSNotificationCenter defaultCenter] addObserverForName:[SubscriptionManager subscriptionStateChangedNotification] object:[SubscriptionManager shared] queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
@@ -248,8 +254,21 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
     [self showFileSelector];
 	_lastTextKind = _kind;
 	[tabSelector setSelectedSegment:tabSelector.segmentCount - 1];
-	[self updateTextTabWithFileAtIndex:selectedFileIndex];
-	[tabs selectTabViewItemAtIndex:kTextTabIndex];
+    if (_kind==Kind_HTML || _kind==Kind_Graph_Adm_Svg)
+    {
+        [self updateHTMLTabWithFileAtIndex:selectedFileIndex];
+        [tabs selectTabViewItemAtIndex:kHTMLTabIndex];
+    }
+    else
+    {
+	    [self updateTextTabWithFileAtIndex:selectedFileIndex];
+	    [tabs selectTabViewItemAtIndex:kTextTabIndex];
+    }
+}
+
+-(IBAction)selectViewHTML:(id)sender
+{
+    [self _selectViewOFKind:Kind_HTML];
 }
 
 -(IBAction)selectViewXML:(id)sender
@@ -330,6 +349,11 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 -(IBAction)selectViewNISO_Z39_87:(id)sender
 {
 	[self _selectViewOFKind:Kind_NISO_Z39_87];
+}
+
+-(IBAction)selectViewGraph_Adm_Svg:(id)sender
+{
+	[self _selectViewOFKind:Kind_Graph_Adm_Svg];
 }
 
 
@@ -462,6 +486,9 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 					break;
 				case 18:
 					format = TextKindToNSString(Kind_NISO_Z39_87);
+					break;
+				case 19:
+					format = TextKindToNSString(Kind_Graph_Adm_Svg);
 					break;
 				case 0:
 				default:
@@ -630,6 +657,9 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 	//Text View
 	[self updateTextTabWithFileAtIndex:index];
 
+    //HTML View
+    [self updateHTMLTabWithFileAtIndex:index];
+
 	//tree view
 	[treeView setIndex:index];
 
@@ -719,6 +749,25 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 
 }
 
+-(void)updateHTMLTabWithFileAtIndex:(NSUInteger)index
+{
+    NSString *_inform = TextKindToNSString(_lastTextKind);
+    [mediaList setOption:@"Inform" withValue:_inform];
+
+    NSString *html=[mediaList informAtIndex:index];
+    if (_lastTextKind==Kind_Graph_Adm_Svg)
+    {
+        NSRange range = [html rangeOfString:@"<svg"];
+        if (range.length)
+            html=[html substringFromIndex:range.location];
+        
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"/Plugin/Graph/Template" ofType:@"html"];
+        NSString *template = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL];
+        html=[template stringByReplacingOccurrencesOfString:@"@SVG@" withString:html];
+    }
+    [htmlField setContent:html];
+    [mediaList setOption:@"Inform" withValue:@""];
+}
 
 -(void)updateTextTabWithFileAtIndex:(NSUInteger)index
 {
@@ -899,6 +948,10 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
     else if(action == @selector(selectCompareTab:)) {
 		[menuItem setState: ([tabs indexOfTabViewItem:tabs.selectedTabViewItem] == kCompareTabIndex ? NSOnState : NSOffState)];
 	}
+    else if(action == @selector(selectViewHTML:)) {
+        BOOL state = [tabs indexOfTabViewItem:tabs.selectedTabViewItem] == kHTMLTabIndex && _lastTextKind == Kind_HTML ? YES : NO;
+        [menuItem setState: (state ? NSOnState : NSOffState)];
+    }
 	else if(action == @selector(selectViewXML:)) {
 		BOOL state = [tabs indexOfTabViewItem:tabs.selectedTabViewItem] == kTextTabIndex && _lastTextKind == Kind_XML ? YES : NO;
 		[menuItem setState: (state ? NSOnState : NSOffState)];
@@ -961,6 +1014,10 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 	}
 	else if(action == @selector(selectViewNISO_Z39_87:)) {
 		BOOL state = [tabs indexOfTabViewItem:tabs.selectedTabViewItem] == kTextTabIndex && _lastTextKind == Kind_NISO_Z39_87 ? YES : NO;
+		[menuItem setState: (state ? NSOnState : NSOffState)];
+	}
+	else if(action == @selector(selectViewGraph_Adm_Svg:)) {
+		BOOL state = [tabs indexOfTabViewItem:tabs.selectedTabViewItem] == kTextTabIndex && _lastTextKind == Kind_Graph_Adm_Svg ? YES : NO;
 		[menuItem setState: (state ? NSOnState : NSOffState)];
 	}
 	else if(action == @selector(export:)) {
