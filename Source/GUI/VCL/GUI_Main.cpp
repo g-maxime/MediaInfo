@@ -229,6 +229,8 @@ void __fastcall TMainF::GUI_Configure()
     else if (Prefs->Config(__T("Output"))==__T("FIMS_1.3")) {M_View_FIMS_1_3Click(NULL); M_View_FIMS_1_3->Checked=true;}
     else if (Prefs->Config(__T("Output"))==__T("NISO_Z39.87")) {M_View_NISO_Z39_87Click(NULL); M_View_NISO_Z39_87->Checked=true;}
     else if (Prefs->Config(__T("Output"))==__T("Graph_Adm_Svg")) {M_View_Graph_Adm_SvgClick(NULL); M_View_Graph_Adm_Svg->Checked=true;}
+    else if (Prefs->Config(__T("Output"))==__T("Graph_Mp4_Svg")) {M_View_Graph_Mp4_SvgClick(NULL); M_View_Graph_Mp4_Svg->Checked=true;}
+    else if (Prefs->Config(__T("Output"))==__T("Graph_Mpegh3da_Svg")) {M_View_Graph_Mpegh3da_SvgClick(NULL); M_View_Graph_Mpegh3da_Svg->Checked=true;}
     else if (Prefs->Config(__T("Output"))==__T("reVTMD")) {M_View_reVTMDClick(NULL); M_View_reVTMD->Checked=true;}
     else if (Prefs->Config(__T("Output"))==__T("Custom")) {M_View_CustomClick(NULL); M_View_Custom->Checked=true;}
 
@@ -866,26 +868,31 @@ void __fastcall TMainF::Refresh(TTabSheet *Page)
             I->Option_Static(__T("Inform"), __T("reVTMD"));
         else if (M_View_NISO_Z39_87->Checked)
             I->Option_Static(__T("Inform"), __T("NISO_Z39.87"));
-		else if (M_View_Graph_Adm_Svg->Checked)
-			I->Option_Static(__T("Inform"), __T("Graph_Adm_Svg"));
-		else
+        else if (M_View_Graph_Adm_Svg->Checked)
+            I->Option_Static(__T("Inform"), __T("Graph_Adm_Svg"));
+        else if (M_View_Graph_Mp4_Svg->Checked)
+            I->Option_Static(__T("Inform"), __T("Graph_Mp4_Svg"));
+        else if (M_View_Graph_Mpegh3da_Svg->Checked)
+            I->Option_Static(__T("Inform"), __T("Graph_Mpegh3da_Svg"));
+        else
             I->Option_Static(__T("Inform"), Prefs->Details[Prefs_Custom].Read());
         Ztring S1=I->Inform();
         if (S1.empty())
 			S1=Prefs->Translate(__T("At least one file")).c_str();
 
-		if (I->Option_Static(__T("Inform_Get"), __T(""))==__T("Graph_Adm_Svg"))
-		{
-			S1=Ztring();
-			for (size_t Pos=0; Pos<I->Count_Get(); Pos++)
-			{
-				Ztring Svg=I->Inform(Pos);
-				size_t Pos=Svg.find(__T("<svg"));
-				if (Pos!=std::string::npos)
-					Svg=Svg.substr(Pos);
-				S1+=(Pos?__T("<br/>"):__T(""))+Svg;
-			}
-			Ztring Template=__T("<html>\n\
+        if (I->Option_Static(__T("Inform_Get"), __T(""))==__T("Graph_Adm_Svg") ||
+            I->Option_Static(__T("Inform_Get"), __T(""))==__T("Graph_Mp4_Svg") ||
+            I->Option_Static(__T("Inform_Get"), __T(""))==__T("Graph_Mpegh3da_Svg")) {
+            S1=Ztring();
+            for (size_t Pos=0; Pos<I->Count_Get(); Pos++)
+            {
+                Ztring Svg=I->Inform(Pos);
+                size_t Pos=Svg.find(__T("<svg"));
+                if (Pos!=std::string::npos)
+                    Svg=Svg.substr(Pos);
+                S1+=(Pos?__T("<br/>"):__T(""))+Svg;
+         }
+         Ztring Template=__T("<html>\n\
   <head>\n\
 	<meta http-equiv='X-UA-Compatible' content='IE=edge'>\n\
 	<meta charset='utf-8'>\n\
@@ -1264,6 +1271,22 @@ void __fastcall TMainF::M_View_Graph_Adm_SvgClick(TObject *Sender)
 {
     M_View_Graph_Adm_Svg->Checked=true;
     ToolBar_View_Graph_Adm_Svg->Checked=true;
+    ChangePage(Page_Custom);
+}
+
+//---------------------------------------------------------------------------
+void __fastcall TMainF::M_View_Graph_Mp4_SvgClick(TObject *Sender)
+{
+    M_View_Graph_Mp4_Svg->Checked=true;
+    ToolBar_View_Graph_Mp4_Svg->Checked=true;
+    ChangePage(Page_Custom);
+}
+
+//---------------------------------------------------------------------------
+void __fastcall TMainF::M_View_Graph_Mpegh3da_SvgClick(TObject *Sender)
+{
+    M_View_Graph_Mpegh3da_Svg->Checked=true;
+    ToolBar_View_Graph_Mpegh3da_Svg->Checked=true;
     ChangePage(Page_Custom);
 }
 

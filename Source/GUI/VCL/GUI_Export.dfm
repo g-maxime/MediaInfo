@@ -608,6 +608,31 @@ object ExportF: TExportF
           OnClick = Export_Graph_Adm_Svg_SideCarClick
         end
       end
+      object Export_Graph_Mp4_Svg: TTabSheet
+        Caption = 'MP4 graph'
+        object Export_Graph_Mp4_Svg_SideCar: TCheckBox
+          Left = 0
+          Top = 9
+          Width = 597
+          Height = 18
+          Caption = 'Sidecar file (filename.Graph_Mp4.svg)'
+          TabOrder = 0
+          OnClick = Export_Graph_Mp4_Svg_SideCarClick
+        end
+      end
+
+      object Export_Graph_Mpegh3da_Svg: TTabSheet
+        Caption = 'MPEG-H 3D Audio graph'
+        object Export_Graph_Mpegh3da_Svg_SideCar: TCheckBox
+          Left = 0
+          Top = 9
+          Width = 597
+          Height = 18
+          Caption = 'Sidecar file (filename.Graph_Mpegh3da.svg)'
+          TabOrder = 0
+          OnClick = Export_Graph_Mpegh3da_Svg_SideCarClick
+        end
+      end
       object Export_reVTMD: TTabSheet
         Caption = 'reVTMD'
         object Export_reVTMD_SideCar: TCheckBox

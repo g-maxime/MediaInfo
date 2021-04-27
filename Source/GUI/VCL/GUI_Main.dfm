@@ -2247,6 +2247,18 @@ object MainF: TMainF
         RadioItem = True
         OnClick = M_View_Graph_Adm_SvgClick
       end
+      object M_View_Graph_Mp4_Svg: TMenuItem
+        AutoCheck = True
+        Caption = 'MP4 graph'
+        RadioItem = True
+        OnClick = M_View_Graph_Mp4_SvgClick
+      end
+      object M_View_Graph_Mpegh3da_Svg: TMenuItem
+        AutoCheck = True
+        Caption = 'MPEG-H 3D Audio graph'
+        RadioItem = True
+        OnClick = M_View_Graph_Mpegh3da_SvgClick
+      end
       object M_View_Custom: TMenuItem
         AutoCheck = True
         Caption = 'Custom'
@@ -3971,6 +3983,14 @@ object MainF: TMainF
     end
     object ToolBar_View_Graph_Adm_Svg: TMenuItem
       Caption = 'ADM graph'
+      RadioItem = True
+    end
+    object ToolBar_View_Graph_Mp4_Svg: TMenuItem
+      Caption = 'MP4 graph'
+      RadioItem = True
+    end
+    object ToolBar_View_Graph_Mpegh3da_Svg: TMenuItem
+      Caption = 'MPEG-H 3D Audio graph'
       RadioItem = True
     end
     object ToolBar_View_reVTMD: TMenuItem
