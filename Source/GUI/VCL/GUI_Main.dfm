@@ -2156,6 +2156,12 @@ object MainF: TMainF
         RadioItem = True
         OnClick = M_View_JSONClick
       end
+      object M_View_Graph_Svg: TMenuItem
+        AutoCheck = True
+        Caption = 'Graph'
+        RadioItem = True
+        OnClick = M_View_Graph_SvgClick
+      end
       object M_View_MPEG7: TMenuItem
         AutoCheck = True
         Caption = 'MPEG-7'
@@ -2240,24 +2246,6 @@ object MainF: TMainF
         Caption = 'NISO Z39.87'
         RadioItem = True
         OnClick = M_View_NISO_Z39_87Click
-      end
-      object M_View_Graph_Adm_Svg: TMenuItem
-        AutoCheck = True
-        Caption = 'ADM graph'
-        RadioItem = True
-        OnClick = M_View_Graph_Adm_SvgClick
-      end
-      object M_View_Graph_Mp4_Svg: TMenuItem
-        AutoCheck = True
-        Caption = 'MP4 graph'
-        RadioItem = True
-        OnClick = M_View_Graph_Mp4_SvgClick
-      end
-      object M_View_Graph_Mpegh3da_Svg: TMenuItem
-        AutoCheck = True
-        Caption = 'MPEG-H 3D Audio graph'
-        RadioItem = True
-        OnClick = M_View_Graph_Mpegh3da_SvgClick
       end
       object M_View_Custom: TMenuItem
         AutoCheck = True
@@ -3938,6 +3926,10 @@ object MainF: TMainF
       Caption = 'JSON'
       RadioItem = True
     end
+    object ToolBar_View_Graph_Svg: TMenuItem
+      Caption = 'Graph'
+      RadioItem = True
+    end
     object ToolBar_View_MPEG7: TMenuItem
       Caption = 'MPEG-7'
       RadioItem = True
@@ -3979,18 +3971,6 @@ object MainF: TMainF
     end
     object ToolBar_View_NISO_Z39_87: TMenuItem
       Caption = 'NISO Z39.87'
-      RadioItem = True
-    end
-    object ToolBar_View_Graph_Adm_Svg: TMenuItem
-      Caption = 'ADM graph'
-      RadioItem = True
-    end
-    object ToolBar_View_Graph_Mp4_Svg: TMenuItem
-      Caption = 'MP4 graph'
-      RadioItem = True
-    end
-    object ToolBar_View_Graph_Mpegh3da_Svg: TMenuItem
-      Caption = 'MPEG-H 3D Audio graph'
       RadioItem = True
     end
     object ToolBar_View_reVTMD: TMenuItem

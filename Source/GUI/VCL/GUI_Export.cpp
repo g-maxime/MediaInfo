@@ -173,9 +173,7 @@ void TExportF::Name_Adapt()
         SaveDialog1->DefaultExt=__T("xml");
         SaveDialog1->Filter=__T("XML File|*.xml");
     }
-    else if (Export->ActivePage==Export_Graph_Adm_Svg ||
-             Export->ActivePage==Export_Graph_Mp4_Svg ||
-             Export->ActivePage==Export_Graph_Mpegh3da_Svg)
+    else if (Export->ActivePage==Export_Graph_Svg)
     {
         FN.Extension_Set(__T("svg"));
         SaveDialog1->DefaultExt=__T("svg");
@@ -245,12 +243,8 @@ int TExportF::Run(MediaInfoNameSpace::MediaInfoList &MI, ZenLib::Ztring DefaultF
         Export->ActivePage=Export_FIMS_1_3;
     else if (Info==__T("NISO_Z39.87"))
         Export->ActivePage=Export_NISO_Z39_87;
-    else if (Info==__T("Graph_Adm_Svg"))
-        Export->ActivePage=Export_Graph_Adm_Svg;
-    else if (Info==__T("Graph_Mp4_Svg"))
-        Export->ActivePage=Export_Graph_Mp4_Svg;
-    else if (Info==__T("Graph_Mpegh3da_Svg"))
-       Export->ActivePage=Export_Graph_Mpegh3da_Svg;
+    else if (Info==__T("Graph_Svg"))
+        Export->ActivePage=Export_Graph_Svg;
     else if (Info==__T("reVTMD"))
         Export->ActivePage=Export_reVTMD;
 
@@ -732,48 +726,16 @@ void TExportF::Export_Run()
         }
         Text=ToExport->Inform().c_str();
     }
-    else if (Export->ActivePage==Export_Graph_Adm_Svg)
+    else if (Export->ActivePage==Export_Graph_Svg)
     {
-        ToExport->Option_Static(__T("Inform"), __T("Graph_Adm_Svg"));
-        if (Export_Graph_Adm_Svg_SideCar->Checked)
+        ToExport->Option_Static(__T("Inform"), __T("Graph_Svg"));
+        if (Export_Graph_Svg_SideCar->Checked)
         {
             for (size_t Pos=0; Pos<ToExport->Count_Get(); Pos++)
             {
                 Text=ToExport->Inform(Pos).c_str();
                 File F;
-                F.Create(Ztring(ToExport->Get(Pos, Stream_General, 0, __T("CompleteName")).c_str())+__T(".Graph_Adm.svg"));
-                F.Write(Text);
-            }
-            return;
-        }
-        Text=ToExport->Inform().c_str();
-    }
-    else if (Export->ActivePage==Export_Graph_Mp4_Svg)
-    {
-        ToExport->Option_Static(__T("Inform"), __T("Graph_Mp4_Svg"));
-        if (Export_Graph_Mp4_Svg_SideCar->Checked)
-        {
-            for (size_t Pos=0; Pos<ToExport->Count_Get(); Pos++)
-            {
-                Text=ToExport->Inform(Pos).c_str();
-                File F;
-                F.Create(Ztring(ToExport->Get(Pos, Stream_General, 0, __T("CompleteName")).c_str())+__T(".Graph_Mp4.svg"));
-                F.Write(Text);
-            }
-            return;
-        }
-        Text=ToExport->Inform().c_str();
-    }
-    else if (Export->ActivePage==Export_Graph_Mpegh3da_Svg)
-    {
-        ToExport->Option_Static(__T("Inform"), __T("Graph_Mpegh3da_Svg"));
-        if (Export_Graph_Mpegh3da_Svg_SideCar->Checked)
-        {
-            for (size_t Pos=0; Pos<ToExport->Count_Get(); Pos++)
-            {
-                Text=ToExport->Inform(Pos).c_str();
-                File F;
-                F.Create(Ztring(ToExport->Get(Pos, Stream_General, 0, __T("CompleteName")).c_str())+__T(".Graph_Mpegh3da.svg"));
+                F.Create(Ztring(ToExport->Get(Pos, Stream_General, 0, __T("CompleteName")).c_str())+__T(".Graph.svg"));
                 F.Write(Text);
             }
             return;
@@ -932,26 +894,12 @@ void __fastcall TExportF::ExportChange(TObject *Sender)
         File_Append->Visible=false;
         Name_Choose->Visible=Export_NISO_Z39_87_SideCar->Checked?false:true;;
     }
-    else if (Export->ActivePage==Export_Graph_Adm_Svg)
+    else if (Export->ActivePage==Export_Graph_Svg)
     {
-        Export_Graph_Adm_Svg_SideCarClick(Sender);
+        Export_Graph_Svg_SideCarClick(Sender);
         File_Append->Checked=false;
         File_Append->Visible=false;
-        Name_Choose->Visible=Export_Graph_Adm_Svg_SideCar->Checked?false:true;;
-    }
-    else if (Export->ActivePage==Export_Graph_Mp4_Svg)
-    {
-        Export_Graph_Mp4_Svg_SideCarClick(Sender);
-        File_Append->Checked=false;
-        File_Append->Visible=false;
-        Name_Choose->Visible=Export_Graph_Mp4_Svg_SideCar->Checked?false:true;;
-    }
-    else if (Export->ActivePage==Export_Graph_Mpegh3da_Svg)
-    {
-        Export_Graph_Mpegh3da_Svg_SideCarClick(Sender);
-        File_Append->Checked=false;
-        File_Append->Visible=false;
-        Name_Choose->Visible=Export_Graph_Mpegh3da_Svg_SideCar->Checked?false:true;;
+        Name_Choose->Visible=Export_Graph_Svg_SideCar->Checked?false:true;;
     }
     else
     {
@@ -1102,21 +1050,9 @@ void __fastcall TExportF::Export_NISO_Z39_87_SideCarClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TExportF::Export_Graph_Adm_Svg_SideCarClick(TObject *Sender)
+void __fastcall TExportF::Export_Graph_Svg_SideCarClick(TObject *Sender)
 {
-    Name_Choose->Visible=Export_Graph_Adm_Svg_SideCar->Checked?false:true;
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TExportF::Export_Graph_Mp4_Svg_SideCarClick(TObject *Sender)
-{
-    Name_Choose->Visible=Export_Graph_Mp4_Svg_SideCar->Checked?false:true;
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TExportF::Export_Graph_Mpegh3da_Svg_SideCarClick(TObject *Sender)
-{
-    Name_Choose->Visible=Export_Graph_Mpegh3da_Svg_SideCar->Checked?false:true;
+    Name_Choose->Visible=Export_Graph_Svg_SideCar->Checked?false:true;
 }
 //---------------------------------------------------------------------------
 
