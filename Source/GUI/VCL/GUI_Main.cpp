@@ -839,7 +839,15 @@ void __fastcall TMainF::Refresh(TTabSheet *Page)
         else if (M_View_JSON->Checked)
             I->Option_Static(__T("Inform"), __T("JSON"));
         else if (M_View_Graph_Svg->Checked)
+        {
+            if (!Prefs->Config(__T("Graph_Adm_ShowTrackUIDs")).empty())
+                I->Option_Static(__T("Graph_Adm_ShowTrackUIDs"), Prefs->Config(__T("Graph_Adm_ShowTrackUIDs")));
+
+            if (!Prefs->Config(__T("Graph_Adm_ShowChannelFormats")).empty())
+                I->Option_Static(__T("Graph_Adm_ShowChannelFormats"), Prefs->Config(__T("Graph_Adm_ShowChannelFormats")));
+
             I->Option_Static(__T("Inform"), __T("Graph_Svg"));
+        }
         else if (M_View_MPEG7->Checked)
             I->Option_Static(__T("Inform"), __T("MPEG-7"));
         else if (M_View_PBCore->Checked)

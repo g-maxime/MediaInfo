@@ -158,6 +158,8 @@ Address;Address
 Add creation date to text output;Add creation date to text output
 Add version to text output;Add version to text output
 AdID;Ad-ID identifier
+ADM: Show ChannelFormats;ADM: Show ChannelFormats
+ADM: Show TrackUIDs;ADM: Show TrackUIDs
 Advanced;Advanced
 Advanced mode;Advanced mode
 Album;Album

@@ -442,6 +442,25 @@ void __fastcall TPreferencesF::Language_DeleteClick(TObject *Sender)
 }
 
 //---------------------------------------------------------------------------
+void __fastcall TPreferencesF::Graph_Adm_ShowTrackUIDsClick(TObject *Sender)
+{
+    if (Graph_Adm_ShowTrackUIDs->Checked)
+        Prefs->Config(__T("Graph_Adm_ShowTrackUIDs"), 1)=__T("1");
+    else
+        Prefs->Config(__T("Graph_Adm_ShowTrackUIDs"), 1)=__T("0");
+}
+
+//---------------------------------------------------------------------------
+void __fastcall TPreferencesF::Graph_Adm_ShowChannelFormatsClick(TObject *Sender)
+
+{
+    if (Graph_Adm_ShowChannelFormats->Checked)
+        Prefs->Config(__T("Graph_Adm_ShowChannelFormats"), 1)=__T("1");
+    else
+        Prefs->Config(__T("Graph_Adm_ShowChannelFormats"), 1)=__T("0");
+}
+
+//---------------------------------------------------------------------------
 void __fastcall TPreferencesF::Custom_NewClick(TObject *Sender)
 {
     UnicodeString S1=__T("New");
@@ -492,6 +511,10 @@ void __fastcall TPreferencesF::TreeChange(TObject *Sender,
         Page->ActivePage=Customize_Custom;
     }
     if (Node==Tree->Items->Item[6])
+    {
+        Page->ActivePage=Customize_Graph;
+    }
+    if (Node==Tree->Items->Item[7])
     {
         Page->ActivePage=Customize_Language;
     }
@@ -550,6 +573,9 @@ void __fastcall TPreferencesF::Setup_AdvancedShow(TObject *Sender)
     Advanced_CloseAllAuto->Checked=Prefs->Config(__T("CloseAllAuto")).To_int32s();
     Advanced_InformVersion->Checked=Prefs->Config(__T("InformVersion")).To_int32s();
     Advanced_InformTimestamp->Checked=Prefs->Config(__T("InformTimestamp")).To_int32s();
+    Graph_Adm_ShowTrackUIDs->Checked=Prefs->Config(__T("Graph_Adm_ShowTrackUIDs")).To_int32s();
+    Graph_Adm_ShowChannelFormats->Checked=Prefs->Config(__T("Graph_Adm_ShowChannelFormats")).To_int32s();
+
 }
 
 //---------------------------------------------------------------------------
@@ -586,7 +612,8 @@ void __fastcall TPreferencesF::GUI_Configure()
     Tree->Items->Item[3]->Text=Prefs->Translate(__T("Sheet")).c_str();
     Tree->Items->Item[4]->Text=Prefs->Translate(__T("Tree & Text")).c_str();
     Tree->Items->Item[5]->Text=Prefs->Translate(__T("Custom")).c_str();
-    Tree->Items->Item[6]->Text=Prefs->Translate(__T("Language")).c_str();
+    Tree->Items->Item[7]->Text=Prefs->Translate(__T("Graph")).c_str();
+    Tree->Items->Item[7]->Text=Prefs->Translate(__T("Language")).c_str();
     //-General
     General_Language_More->Caption=(Prefs->Translate(__T("More"))+__T("...")).c_str();
     Langue_C->Caption=Prefs->Translate(__T("Language")).c_str();
@@ -663,6 +690,9 @@ void __fastcall TPreferencesF::GUI_Configure()
     Sheet_New->Caption=(Prefs->Translate(__T("New"))+__T("...")).c_str();
     //-Tree
     Tree_NotYet->Caption=(Prefs->Translate(__T("Not yet"))+__T("...")).c_str();
+    //-Graph
+    Graph_Adm_ShowTrackUIDs->Caption=Prefs->Translate(__T("ADM: Show TrackUIDs")).c_str();
+    Graph_Adm_ShowChannelFormats->Caption=Prefs->Translate(__T("ADM: Show ChannelFormats")).c_str();
     //-Custom
     Custom_Caption->Caption=Prefs->Translate(__T("Choose custom text")).c_str();
     Custom_Edit->Caption=(Prefs->Translate(__T("Edit"))+__T("...")).c_str();

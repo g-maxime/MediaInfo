@@ -57,6 +57,9 @@ __published:    // IDE-managed Components
     TButton *Sheet_New;
     TTabSheet *Customize_TreeText;
     TLabel *Tree_NotYet;
+    TTabSheet *Customize_Graph;
+    TCheckBox *Graph_Adm_ShowTrackUIDs;
+    TCheckBox *Graph_Adm_ShowChannelFormats;
     TTabSheet *Customize_Custom;
     TLabel *Custom_Caption;
     TButton *Custom_New;
@@ -88,6 +91,8 @@ __published:    // IDE-managed Components
     void __fastcall Advanced_CloseAllAutoClick(TObject *Sender);
     void __fastcall Advanced_InformVersionClick(TObject *Sender);
     void __fastcall Advanced_InformTimestampClick(TObject *Sender);
+    void __fastcall Graph_Adm_ShowTrackUIDsClick(TObject *Sender);
+    void __fastcall Graph_Adm_ShowChannelFormatsClick(TObject *Sender);
     void __fastcall Setup_GeneralShow(TObject *Sender);
     void __fastcall Setup_AdvancedShow(TObject *Sender);
     void __fastcall Customize_LanguageShow(TObject *Sender);
