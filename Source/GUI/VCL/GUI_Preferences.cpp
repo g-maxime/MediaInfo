@@ -573,9 +573,6 @@ void __fastcall TPreferencesF::Setup_AdvancedShow(TObject *Sender)
     Advanced_CloseAllAuto->Checked=Prefs->Config(__T("CloseAllAuto")).To_int32s();
     Advanced_InformVersion->Checked=Prefs->Config(__T("InformVersion")).To_int32s();
     Advanced_InformTimestamp->Checked=Prefs->Config(__T("InformTimestamp")).To_int32s();
-    Graph_Adm_ShowTrackUIDs->Checked=Prefs->Config(__T("Graph_Adm_ShowTrackUIDs")).To_int32s();
-    Graph_Adm_ShowChannelFormats->Checked=Prefs->Config(__T("Graph_Adm_ShowChannelFormats")).To_int32s();
-
 }
 
 //---------------------------------------------------------------------------
@@ -590,6 +587,14 @@ void __fastcall TPreferencesF::Customize_CustomShow(TObject *Sender)
 {
     ComboBox_Update(Custom_Sel, Prefs_Custom);
     Custom_SelChange(NULL);
+}
+
+//---------------------------------------------------------------------------
+void __fastcall TPreferencesF::Customize_GraphShow(TObject *Sender)
+{
+    Graph_Adm_ShowTrackUIDs->Checked=Prefs->Config(__T("Graph_Adm_ShowTrackUIDs")).To_int32s();
+    Graph_Adm_ShowChannelFormats->Checked=Prefs->Config(__T("Graph_Adm_ShowChannelFormats")).To_int32s();
+
 }
 
 //---------------------------------------------------------------------------

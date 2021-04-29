@@ -103,6 +103,7 @@ __published:    // IDE-managed Components
     void __fastcall Sheet_EditClick(TObject *Sender);
     void __fastcall Sheet_NewClick(TObject *Sender);
     void __fastcall Customize_SheetShow(TObject *Sender);
+    void __fastcall Customize_GraphShow(TObject *Sender);
     void __fastcall CB_ShowMenuClick(TObject *Sender);
     void __fastcall CB_InfoTipClick(TObject *Sender);
     void __fastcall CB_InscrireShell_FolderClick(TObject *Sender);

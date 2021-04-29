@@ -343,6 +343,7 @@ object PreferencesF: TPreferencesF
     object Customize_Graph: TTabSheet
       Caption = 'Graph'
       ImageIndex = 8
+      OnShow = Customize_GraphShow
       object Graph_Adm_ShowTrackUIDs: TCheckBox
         Left = 0
         Top = 26
