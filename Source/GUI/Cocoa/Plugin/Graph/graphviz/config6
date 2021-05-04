@@ -167,44 +167,6 @@ libgvplugin_neato_layout.6.dylib neato_layout {
 		nop2 0
 	}
 }
-libgvplugin_quartz.6.dylib quartz {
-	render {
-		quartz 1
-	}
-	textlayout {
-		textlayout 8
-	}
-	loadimage {
-		bmp:quartz 8
-		gif:quartz 8
-		pdf:quartz 8
-		jpe:quartz 8
-		jpeg:quartz 8
-		jpg:quartz 8
-		png:quartz 8
-	}
-	device {
-		pdf:quartz 8
-		cgimage:quartz 8
-		bmp:quartz 8
-		gif:quartz 8
-		ico:quartz 8
-		jpe:quartz 8
-		jpeg:quartz 8
-		jpg:quartz 8
-		jp2:quartz 8
-		png:quartz 8
-		tif:quartz 8
-		tiff:quartz 8
-		tga:quartz 8
-		exr:quartz 8
-		icns:quartz 8
-		pct:quartz 8
-		pict:quartz 8
-		psd:quartz 8
-		sgi:quartz 8
-	}
-}
 libgvplugin_visio.6.dylib visio {
 	device {
 		vdx:visio 1

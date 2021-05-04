@@ -34,6 +34,7 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 		case Kind_XML:			_ret = @"XML"; break;
 		case Kind_CSV:			_ret = @"CSV"; break;
 		case Kind_JSON:			_ret = @"JSON"; break;
+		case Kind_Graph_Svg:		_ret = @"Graph_Svg"; break;
 		case Kind_MPEG7:		_ret = @"MPEG-7"; break;
 		case Kind_PBCore:		_ret = @"PBCore"; break;
 		case Kind_PBCore2:		_ret = @"PBCore2"; break;
@@ -48,7 +49,6 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 		case Kind_FIMS_1_3:		_ret = @"FIMS_1.3"; break;
 		case Kind_reVTMD:		_ret = @"reVTMD"; break;
 		case Kind_NISO_Z39_87:		_ret = @"NISO_Z39.87"; break;
-		case Kind_Graph_Adm_Svg:		_ret = @"Graph_Adm_Svg"; break;
 		case Kind_Text:
 								_ret = @"";
 		default:				break;
@@ -100,6 +100,8 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
                 [self selectViewXML:nil];
             else if ([defaultView isEqualToString:@"JSON"])
                 [self selectViewJSON:nil];
+            else if ([defaultView isEqualToString:@"Graph_Svg"])
+                [self selectViewGraph_Svg:nil];
             else if ([defaultView isEqualToString:@"MPEG-7"])
                 [self selectViewMPEG7:nil];
             else if ([defaultView isEqualToString:@"PBCore"])
@@ -128,8 +130,6 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
                 [self selectViewReVTMD:nil];
             else if ([defaultView isEqualToString:@"NISO_Z39.87"])
                 [self selectViewNISO_Z39_87:nil];
-            else if ([defaultView isEqualToString:@"Graph_Adm_Svg"])
-                [self selectViewGraph_Adm_Svg:nil];
             }
         else {
             [observers addObject:[[NSNotificationCenter defaultCenter] addObserverForName:[SubscriptionManager subscriptionStateChangedNotification] object:[SubscriptionManager shared] queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
@@ -254,15 +254,27 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
     [self showFileSelector];
 	_lastTextKind = _kind;
 	[tabSelector setSelectedSegment:tabSelector.segmentCount - 1];
-    if (_kind==Kind_HTML || _kind==Kind_Graph_Adm_Svg)
+    if (_kind==Kind_HTML || _kind==Kind_Graph_Svg)
     {
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"graphAdmShowTrackUIDs"]!=nil)
+        {
+            BOOL value = [[NSUserDefaults standardUserDefaults] boolForKey:@"graphAdmShowTrackUIDs"];
+            [oMediaInfoList setOptionStatic:@"Graph_Adm_ShowTrackUIDs" withValue:(value?@"1":@"0")];
+        }
+
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"graphAdmShowChannelFormat"]!=nil)
+        {
+            BOOL value = [[NSUserDefaults standardUserDefaults] boolForKey:@"graphAdmShowChannelFormats"];
+            [oMediaInfoList setOptionStatic:@"Graph_Adm_ShowChannelFormats" withValue:(value?@"1":@"0")];
+        }
+
         [self updateHTMLTabWithFileAtIndex:selectedFileIndex];
         [tabs selectTabViewItemAtIndex:kHTMLTabIndex];
     }
     else
     {
-	    [self updateTextTabWithFileAtIndex:selectedFileIndex];
-	    [tabs selectTabViewItemAtIndex:kTextTabIndex];
+        [self updateTextTabWithFileAtIndex:selectedFileIndex];
+        [tabs selectTabViewItemAtIndex:kTextTabIndex];
     }
 }
 
@@ -351,9 +363,9 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 	[self _selectViewOFKind:Kind_NISO_Z39_87];
 }
 
--(IBAction)selectViewGraph_Adm_Svg:(id)sender
+-(IBAction)selectViewGraph_Svg:(id)sender
 {
-	[self _selectViewOFKind:Kind_Graph_Adm_Svg];
+	[self _selectViewOFKind:Kind_Graph_Svg];
 }
 
 
@@ -446,49 +458,49 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 					format = TextKindToNSString(Kind_JSON);
 					break;
 				case 5:
-					format = TextKindToNSString(Kind_MPEG7);
+					format = TextKindToNSString(Kind_Graph_Svg);
 					break;
 				case 6:
-					format = TextKindToNSString(Kind_PBCore);
+					format = TextKindToNSString(Kind_MPEG7);
 					break;
 				case 7:
-					format = TextKindToNSString(Kind_PBCore2);
+					format = TextKindToNSString(Kind_PBCore);
 					break;
 				case 8:
-					format = TextKindToNSString(Kind_EBUCore_1_5);
+					format = TextKindToNSString(Kind_PBCore2);
 					break;
 				case 9:
-					format = TextKindToNSString(Kind_EBUCore_1_6);
+					format = TextKindToNSString(Kind_EBUCore_1_5);
 					break;
 				case 10:
-					format = TextKindToNSString(Kind_EBUCore_1_8_ps);
+					format = TextKindToNSString(Kind_EBUCore_1_6);
 					break;
 				case 11:
-					format = TextKindToNSString(Kind_EBUCore_1_8_sp);
+					format = TextKindToNSString(Kind_EBUCore_1_8_ps);
 					break;
 				case 12:
-					format = TextKindToNSString(Kind_EBUCore_1_8_ps_json);
+					format = TextKindToNSString(Kind_EBUCore_1_8_sp);
 					break;
 				case 13:
-					format = TextKindToNSString(Kind_EBUCore_1_8_sp_json);
+					format = TextKindToNSString(Kind_EBUCore_1_8_ps_json);
 					break;
 				case 14:
-					format = TextKindToNSString(Kind_FIMS_1_1);
+					format = TextKindToNSString(Kind_EBUCore_1_8_sp_json);
 					break;
 				case 15:
-					format = TextKindToNSString(Kind_FIMS_1_2);
+					format = TextKindToNSString(Kind_FIMS_1_1);
 					break;
 				case 16:
-					format = TextKindToNSString(Kind_FIMS_1_3);
+					format = TextKindToNSString(Kind_FIMS_1_2);
 					break;
 				case 17:
-					format = TextKindToNSString(Kind_reVTMD);
+					format = TextKindToNSString(Kind_FIMS_1_3);
 					break;
 				case 18:
-					format = TextKindToNSString(Kind_NISO_Z39_87);
+					format = TextKindToNSString(Kind_reVTMD);
 					break;
 				case 19:
-					format = TextKindToNSString(Kind_Graph_Adm_Svg);
+					format = TextKindToNSString(Kind_NISO_Z39_87);
 					break;
 				case 0:
 				default:
@@ -755,7 +767,7 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
     [mediaList setOption:@"Inform" withValue:_inform];
 
     NSString *html=[mediaList informAtIndex:index];
-    if (_lastTextKind==Kind_Graph_Adm_Svg)
+    if (_lastTextKind==Kind_Graph_Svg)
     {
         NSRange range = [html rangeOfString:@"<svg"];
         if (range.length)
@@ -960,6 +972,10 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 		BOOL state = [tabs indexOfTabViewItem:tabs.selectedTabViewItem] == kTextTabIndex && _lastTextKind == Kind_JSON ? YES : NO;
 		[menuItem setState: (state ? NSOnState : NSOffState)];
 	}
+	else if(action == @selector(selectViewGraph_Svg:)) {
+		BOOL state = [tabs indexOfTabViewItem:tabs.selectedTabViewItem] == kTextTabIndex && _lastTextKind == Kind_Graph_Svg ? YES : NO;
+		[menuItem setState: (state ? NSOnState : NSOffState)];
+	}
 	else if(action == @selector(selectViewMPEG7:)) {
 		BOOL state = [tabs indexOfTabViewItem:tabs.selectedTabViewItem] == kTextTabIndex && _lastTextKind == Kind_MPEG7 ? YES : NO;
 		[menuItem setState: (state ? NSOnState : NSOffState)];
@@ -1014,10 +1030,6 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 	}
 	else if(action == @selector(selectViewNISO_Z39_87:)) {
 		BOOL state = [tabs indexOfTabViewItem:tabs.selectedTabViewItem] == kTextTabIndex && _lastTextKind == Kind_NISO_Z39_87 ? YES : NO;
-		[menuItem setState: (state ? NSOnState : NSOffState)];
-	}
-	else if(action == @selector(selectViewGraph_Adm_Svg:)) {
-		BOOL state = [tabs indexOfTabViewItem:tabs.selectedTabViewItem] == kTextTabIndex && _lastTextKind == Kind_Graph_Adm_Svg ? YES : NO;
 		[menuItem setState: (state ? NSOnState : NSOffState)];
 	}
 	else if(action == @selector(export:)) {
