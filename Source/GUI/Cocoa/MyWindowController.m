@@ -408,8 +408,10 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 
 	NSInteger tag = exportFormatButton.selectedTag;
 
-	if (tag == 4 || tag == 12 || tag == 13)
+	if (tag == 4 || tag == 13 || tag == 14)
 		[_exportSavePanel setAllowedFileTypes:@[@"json"]];
+	else if (tag == 5)
+		[_exportSavePanel setAllowedFileTypes:@[@"svg"]];
 	else if (tag == 3)
 		[_exportSavePanel setAllowedFileTypes:@[@"csv"]];
 	else if (tag == 1)
@@ -763,6 +765,9 @@ NSString* TextKindToNSString(ViewMenu_Kind kind)
 
 -(void)updateHTMLTabWithFileAtIndex:(NSUInteger)index
 {
+    if (_lastTextKind!=Kind_HTML && _lastTextKind!=Kind_Graph_Svg)
+        return;
+
     NSString *_inform = TextKindToNSString(_lastTextKind);
     [mediaList setOption:@"Inform" withValue:_inform];
 
