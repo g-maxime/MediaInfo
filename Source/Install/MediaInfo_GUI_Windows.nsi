@@ -83,6 +83,7 @@ SetCompressor /FINAL /SOLID lzma
 !insertmacro MUI_LANGUAGE "TradChinese"
 !insertmacro MUI_LANGUAGE "Turkish"
 !insertmacro MUI_LANGUAGE "Ukrainian"
+!insertmacro MUI_LANGUAGE "LANG_NEUTRAL"
 !insertmacro MUI_RESERVEFILE_LANGDLL
 
 ; Info
