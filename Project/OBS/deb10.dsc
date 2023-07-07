@@ -8,7 +8,7 @@ Homepage: http://MediaArea.net/MediaInfo
 Standards-Version: 3.9.6
 Vcs-Browser: https://github.com/MediaArea/MediaInfoLib
 Vcs-Git: https://github.com/MediaArea/MediaInfoLib.git
-Build-Depends: debhelper (>= 10), dh-autoreconf, libmediainfo-dev (>= 23.06), libzen-dev (>= 0.4.41), libwxgtk3.0-gtk3-dev, adwaita-icon-theme, zlib1g-dev, pkg-config, rename
+Build-Depends: debhelper (>= 10), dh-autoreconf, libmediainfo-dev (>= 22.06), libzen-dev (>= 0.4.41), libwxgtk3.0-gtk3-dev, adwaita-icon-theme, zlib1g-dev, pkg-config, rename
 Package-List:
  mediainfo deb utils optional arch=any
  mediainfo-gui deb utils optional arch=any
