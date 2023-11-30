@@ -12,6 +12,8 @@ Known bugs
 - Languages (other than english and French) : not all words are translated, I need translators!
 - Others? https://sourceforge.net/p/mediainfo/_list/tickets
 
+x Fix unwanted display of plugin download dialog
+
 Version 23.11, 2023-11-30
 -------------
 + XMP: support of a couple of additional metadata
