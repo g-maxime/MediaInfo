@@ -89,7 +89,7 @@ static PreferencesWindowController *prefsCtrl = nil;
 	[self addLanguageToComboWithTitle:@"Svenska" andValue:@"sv"];
 	//[self addLanguageToComboWithTitle:@"ไทย" andValue:@"th"];
 	[self addLanguageToComboWithTitle:@"Türkçe" andValue:@"tr"];
-	//[self addLanguageToComboWithTitle:@"Українська" andValue:@"uk"];
+	[self addLanguageToComboWithTitle:@"Українська" andValue:@"uk"];
 	
 	// Set language checkmark
 	NSString *savedLang = [[NSUserDefaults standardUserDefaults] objectForKey:@"prefLanguage"];
