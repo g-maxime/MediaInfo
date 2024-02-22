@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		0226605322C9F19C006CE084 /* MacCompare@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0226605222C9F19C006CE084 /* MacCompare@2x.png */; };
-		026834062296A4B20060542A /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 026834052296A4B20060542A /* StoreKit.framework */; };
 		025E200E236C705D0000571F /* ProgressDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 025E200D236C705D0000571F /* ProgressDialog.m */; };
 		0265BEE02330202C00BC2891 /* ProgressDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0265BEDD2330202C00BC2891 /* ProgressDialog.xib */; };
+		026834062296A4B20060542A /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 026834052296A4B20060542A /* StoreKit.framework */; };
 		026C61CE22A86824000D5045 /* MacCompare.png in Resources */ = {isa = PBXBuildFile; fileRef = 026C61CD22A86823000D5045 /* MacCompare.png */; };
 		0291B616230EC397006920BA /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0291B615230EC396006920BA /* CloudKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		0299EC64227C966B00D937F6 /* CompareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0299EC62227C966B00D937F6 /* CompareView.xib */; };
@@ -95,7 +95,6 @@
 		02E91F4E249695F100BFFF71 /* cs */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = cs; path = cs.lproj/CompareView.xib; sourceTree = "<group>"; };
 		02E91F4F249695F200BFFF71 /* pl */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = pl; path = pl.lproj/CompareView.xib; sourceTree = "<group>"; };
 		02E91F50249695F800BFFF71 /* ar */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ar; path = ar.lproj/CompareView.xib; sourceTree = "<group>"; };
-		02E91F51249695F900BFFF71 /* uk */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = uk; path = uk.lproj/CompareView.xib; sourceTree = "<group>"; };
 		02E91F52249695FA00BFFF71 /* tr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = tr; path = tr.lproj/CompareView.xib; sourceTree = "<group>"; };
 		02E91F53249695FB00BFFF71 /* ca */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ca; path = ca.lproj/CompareView.xib; sourceTree = "<group>"; };
 		02E91F54249695FD00BFFF71 /* el */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = el; path = el.lproj/CompareView.xib; sourceTree = "<group>"; };
@@ -121,7 +120,6 @@
 		02E91F692496965D00BFFF71 /* fi */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fi; path = fi.lproj/TreeView.xib; sourceTree = "<group>"; };
 		02E91F6A2496966200BFFF71 /* hu */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = hu; path = hu.lproj/TreeView.xib; sourceTree = "<group>"; };
 		02E91F6B2496966300BFFF71 /* ar */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ar; path = ar.lproj/TreeView.xib; sourceTree = "<group>"; };
-		02E91F6C2496966400BFFF71 /* uk */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = uk; path = uk.lproj/TreeView.xib; sourceTree = "<group>"; };
 		02E91F6D2496966500BFFF71 /* tr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = tr; path = tr.lproj/TreeView.xib; sourceTree = "<group>"; };
 		02E91F6E2496966600BFFF71 /* ca */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ca; path = ca.lproj/TreeView.xib; sourceTree = "<group>"; };
 		02E91F6F2496966700BFFF71 /* el */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = el; path = el.lproj/TreeView.xib; sourceTree = "<group>"; };
@@ -145,7 +143,6 @@
 		02E91F81249697B500BFFF71 /* pl */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = pl; path = pl.lproj/Subscribe.xib; sourceTree = "<group>"; };
 		02E91F82249697BC00BFFF71 /* hu */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = hu; path = hu.lproj/Subscribe.xib; sourceTree = "<group>"; };
 		02E91F83249697BE00BFFF71 /* ar */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ar; path = ar.lproj/Subscribe.xib; sourceTree = "<group>"; };
-		02E91F84249697C000BFFF71 /* uk */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = uk; path = uk.lproj/Subscribe.xib; sourceTree = "<group>"; };
 		02E91F85249697C100BFFF71 /* tr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = tr; path = tr.lproj/Subscribe.xib; sourceTree = "<group>"; };
 		02E91F86249697C200BFFF71 /* ca */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ca; path = ca.lproj/Subscribe.xib; sourceTree = "<group>"; };
 		02E91F87249697C400BFFF71 /* el */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = el; path = el.lproj/Subscribe.xib; sourceTree = "<group>"; };
@@ -175,7 +172,6 @@
 		02E91F9F2496981700BFFF71 /* el */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = el; path = el.lproj/ProgressDialog.xib; sourceTree = "<group>"; };
 		02E91FA02496981900BFFF71 /* ca */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ca; path = ca.lproj/ProgressDialog.xib; sourceTree = "<group>"; };
 		02E91FA12496981B00BFFF71 /* tr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = tr; path = tr.lproj/ProgressDialog.xib; sourceTree = "<group>"; };
-		02E91FA22496981D00BFFF71 /* uk */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = uk; path = uk.lproj/ProgressDialog.xib; sourceTree = "<group>"; };
 		02E91FA32496981F00BFFF71 /* ar */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ar; path = ar.lproj/ProgressDialog.xib; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
@@ -366,6 +362,19 @@
 		8D1107320486CEB800E47090 /* MediaInfo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MediaInfo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C182E09257D1337007646AC /* IndexedTableColumn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IndexedTableColumn.h; sourceTree = "<group>"; };
 		9C182E0A257D1337007646AC /* IndexedTableColumn.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IndexedTableColumn.m; sourceTree = "<group>"; };
+		9C67237B2B87661800E7183F /* uk */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = uk; path = uk.lproj/PurchaseReport.xib; sourceTree = "<group>"; };
+		9C67237C2B87661800E7183F /* uk */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = uk; path = uk.lproj/CompareView.xib; sourceTree = "<group>"; };
+		9C67237D2B87661800E7183F /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/ServicesMenu.strings; sourceTree = "<group>"; };
+		9C67237E2B87661800E7183F /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9C67237F2B87661800E7183F /* uk */ = {isa = PBXFileReference; lastKnownFileType = text; name = uk; path = uk.lproj/lang.csv; sourceTree = "<group>"; };
+		9C6723802B87661800E7183F /* uk */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = uk; path = uk.lproj/About.xib; sourceTree = "<group>"; };
+		9C6723812B87661800E7183F /* uk */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = uk; path = uk.lproj/MyWindow.xib; sourceTree = "<group>"; };
+		9C6723822B87661800E7183F /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		9C6723832B87661800E7183F /* uk */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = uk; path = uk.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		9C6723842B87661800E7183F /* uk */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = uk; path = uk.lproj/Preferences.xib; sourceTree = "<group>"; };
+		9C6723852B87661800E7183F /* uk */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = uk; path = uk.lproj/TreeView.xib; sourceTree = "<group>"; };
+		9C6723862B87661800E7183F /* uk */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = uk; path = uk.lproj/Subscribe.xib; sourceTree = "<group>"; };
+		9C6723872B87661800E7183F /* uk */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = uk; path = uk.lproj/ProgressDialog.xib; sourceTree = "<group>"; };
 		9CEC321E262F84E40056CA65 /* WebKitView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebKitView.h; sourceTree = "<group>"; };
 		9CEC321F262F84E40056CA65 /* WebKitView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebKitView.m; sourceTree = "<group>"; };
 		9CEC3223262F8BB70056CA65 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -600,7 +609,6 @@
 				el,
 				ca,
 				tr,
-				uk,
 				ar,
 				th,
 				bg,
@@ -610,6 +618,7 @@
 				pt,
 				"pt-PT",
 				he,
+				uk,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* MediaInfo */;
 			projectDirPath = "";
@@ -725,8 +734,8 @@
 				02E91F9F2496981700BFFF71 /* el */,
 				02E91FA02496981900BFFF71 /* ca */,
 				02E91FA12496981B00BFFF71 /* tr */,
-				02E91FA22496981D00BFFF71 /* uk */,
 				02E91FA32496981F00BFFF71 /* ar */,
+				9C6723872B87661800E7183F /* uk */,
 			);
 			name = ProgressDialog.xib;
 			sourceTree = "<group>";
@@ -750,7 +759,6 @@
 				02E91F4E249695F100BFFF71 /* cs */,
 				02E91F4F249695F200BFFF71 /* pl */,
 				02E91F50249695F800BFFF71 /* ar */,
-				02E91F51249695F900BFFF71 /* uk */,
 				02E91F52249695FA00BFFF71 /* tr */,
 				02E91F53249695FB00BFFF71 /* ca */,
 				02E91F54249695FD00BFFF71 /* el */,
@@ -759,6 +767,7 @@
 				02E91F572496960B00BFFF71 /* pt */,
 				02E91F582496961100BFFF71 /* zh-Hant */,
 				02E91F5A2496961800BFFF71 /* zh-Hans */,
+				9C67237C2B87661800E7183F /* uk */,
 			);
 			name = CompareView.xib;
 			sourceTree = "<group>";
@@ -784,7 +793,6 @@
 				02E91F692496965D00BFFF71 /* fi */,
 				02E91F6A2496966200BFFF71 /* hu */,
 				02E91F6B2496966300BFFF71 /* ar */,
-				02E91F6C2496966400BFFF71 /* uk */,
 				02E91F6D2496966500BFFF71 /* tr */,
 				02E91F6E2496966600BFFF71 /* ca */,
 				02E91F6F2496966700BFFF71 /* el */,
@@ -792,6 +800,7 @@
 				02E91F712496966D00BFFF71 /* zh-Hant */,
 				02E91F722496966E00BFFF71 /* pt */,
 				02E91F732496967000BFFF71 /* pt-PT */,
+				9C6723852B87661800E7183F /* uk */,
 			);
 			name = TreeView.xib;
 			sourceTree = "<group>";
@@ -816,7 +825,6 @@
 				02E91F81249697B500BFFF71 /* pl */,
 				02E91F82249697BC00BFFF71 /* hu */,
 				02E91F83249697BE00BFFF71 /* ar */,
-				02E91F84249697C000BFFF71 /* uk */,
 				02E91F85249697C100BFFF71 /* tr */,
 				02E91F86249697C200BFFF71 /* ca */,
 				02E91F87249697C400BFFF71 /* el */,
@@ -824,6 +832,7 @@
 				02E91F89249697D100BFFF71 /* zh-Hant */,
 				02E91F8A249697D200BFFF71 /* pt */,
 				02E91F8B249697D400BFFF71 /* pt-PT */,
+				9C6723862B87661800E7183F /* uk */,
 			);
 			name = Subscribe.xib;
 			sourceTree = "<group>";
@@ -833,6 +842,7 @@
 			children = (
 				02B7FB4E17576A61002B92FE /* fr */,
 				02B7FB5017576A90002B92FE /* English */,
+				9C67237D2B87661800E7183F /* uk */,
 			);
 			name = ServicesMenu.strings;
 			sourceTree = "<group>";
@@ -841,6 +851,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				02E91F3D2495373200BFFF71 /* English */,
+				9C67237B2B87661800E7183F /* uk */,
 			);
 			name = PurchaseReport.xib;
 			sourceTree = "<group>";
@@ -849,6 +860,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				089C165DFE840E0CC02AAC07 /* English */,
+				9C6723822B87661800E7183F /* uk */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -881,6 +893,7 @@
 				43098027154815D000E9F818 /* pt-PT */,
 				43098028154815D000E9F818 /* hr */,
 				43098029154819E900E9F818 /* ru */,
+				9C67237E2B87661800E7183F /* uk */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -912,6 +925,7 @@
 				43A059E8153F23AB0056CD79 /* zh-Hant */,
 				430980041546EFAD00E9F818 /* pt */,
 				430980051546EFAD00E9F818 /* pt-PT */,
+				9C6723802B87661800E7183F /* uk */,
 			);
 			name = About.xib;
 			sourceTree = "<group>";
@@ -943,6 +957,7 @@
 				43A059EA153F23B00056CD79 /* zh-Hant */,
 				430980061546EFB300E9F818 /* pt */,
 				430980071546EFB300E9F818 /* pt-PT */,
+				9C6723812B87661800E7183F /* uk */,
 			);
 			name = MyWindow.xib;
 			sourceTree = "<group>";
@@ -974,6 +989,7 @@
 				43A059EC153F23B40056CD79 /* zh-Hant */,
 				430980081546EFB700E9F818 /* pt */,
 				430980091546EFB700E9F818 /* pt-PT */,
+				9C6723832B87661800E7183F /* uk */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -1005,6 +1021,7 @@
 				43A059EE153F23B90056CD79 /* zh-Hant */,
 				4309800A1546EFBD00E9F818 /* pt */,
 				4309800B1546EFBD00E9F818 /* pt-PT */,
+				9C6723842B87661800E7183F /* uk */,
 			);
 			name = Preferences.xib;
 			sourceTree = "<group>";
@@ -1037,6 +1054,7 @@
 				430980021546EFA000E9F818 /* pt */,
 				430980031546EFA400E9F818 /* pt-PT */,
 				4309800E1547262200E9F818 /* hr */,
+				9C67237F2B87661800E7183F /* uk */,
 			);
 			name = lang.csv;
 			sourceTree = "<group>";

@@ -33,7 +33,9 @@
 "83.title" = "File";
 "HYj-FA-ksV.ibShadowedToolTip" = "Show more in the output, including different formats of time or duration";
 "HYj-FA-ksV.title" = "Advanced mode";
-"K4A-dG-lv3.title" = "";
+"JUk-GZ-ldB.ibShadowedToolTip" = "More complete output (slower)";
+"JUk-GZ-ldB.title" = "Full parse";
+"K4A-dG-lv3.title" = "Subscribe";
 "gmp-S7-jxc.title" = "Close All Files";
 "hC5-Lk-GZv.title" = "Close File";
 "nMH-4I-T3M.title" = "Information about the in-app purchase";
