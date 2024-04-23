@@ -6,6 +6,7 @@
 
 package net.mediaarea.mediainfo
 
+import android.app.Activity
 import kotlin.jvm.*
 
 import java.io.File
@@ -19,22 +20,23 @@ import androidx.appcompat.app.AppCompatDelegate
 import android.os.Build
 import android.os.Bundle
 import android.os.AsyncTask
-import android.os.Environment
 import android.os.ParcelFileDescriptor
 import android.net.Uri
-import android.app.Activity
 import android.content.Intent
 import android.database.Cursor
 import android.provider.OpenableColumns
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.content.Context
-import android.widget.Toast
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.os.Environment
 import android.view.*
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -64,6 +66,7 @@ class ReportListActivity : AppCompatActivity(), ReportActivityListener {
     private lateinit var helloLayoutBinding: HelloLayoutBinding
     private lateinit var subscriptionManager: SubscriptionManager
     private lateinit var reportModel: ReportViewModel
+    private lateinit var getContent: ActivityResultLauncher<String>
     private var disposable: CompositeDisposable = CompositeDisposable()
     private var twoPane: Boolean = false
     private var reports: List<Report> = listOf()
@@ -189,17 +192,7 @@ class ReportListActivity : AppCompatActivity(), ReportActivityListener {
 
     private fun handleUri(uri: Uri) {
         if (uri.scheme == "file") {
-            if (Build.VERSION.SDK_INT >= 33) {
-                if (checkSelfPermission(android.Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED ||
-                    checkSelfPermission(android.Manifest.permission.READ_MEDIA_VIDEO) != PackageManager.PERMISSION_GRANTED ||
-                    checkSelfPermission(android.Manifest.permission.READ_MEDIA_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-                    pendingFileUris.add(uri)
-                    ActivityCompat.requestPermissions(this@ReportListActivity,
-                            arrayOf(android.Manifest.permission.READ_MEDIA_IMAGES, android.Manifest.permission.READ_MEDIA_VIDEO, android.Manifest.permission.READ_MEDIA_AUDIO),
-                            READ_EXTERNAL_STORAGE_PERMISSION_REQUEST)
-                    return
-                }
-            } else if (Build.VERSION.SDK_INT >= 23) {
+            if (Build.VERSION.SDK_INT >= 23) {
                 if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     pendingFileUris.add(uri)
                     ActivityCompat.requestPermissions(this@ReportListActivity,
@@ -214,33 +207,30 @@ class ReportListActivity : AppCompatActivity(), ReportActivityListener {
 
     private fun handleIntent(intent: Intent) {
         if (intent.action != null) {
-            if (intent.getBooleanExtra(OPEN_INTENT_PROCESSED, false)) {
-                return
-            }
-
             when (intent.action) {
                 Intent.ACTION_VIEW -> {
                     val uri: Uri? = intent.data
                     if (uri != null) {
                         handleUri(uri)
-                        intent.putExtra(OPEN_INTENT_PROCESSED, true)
                     }
+                    finish()
                 }
                 Intent.ACTION_SEND -> {
                     val uri = intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM)
                     if (uri != null) {
                         handleUri(uri)
-                        intent.putExtra(OPEN_INTENT_PROCESSED, true)
                     }
+                    finish()
                 }
                 Intent.ACTION_SEND_MULTIPLE -> {
                     val uriList = intent.getParcelableArrayListExtra<Uri>(Intent.EXTRA_STREAM)
                     if (uriList != null) {
+
                         for (i in uriList) {
                             handleUri(i)
                         }
-                        intent.putExtra(OPEN_INTENT_PROCESSED, true)
                     }
+                    finish()
                 }
             }
         }
@@ -492,22 +482,6 @@ class ReportListActivity : AppCompatActivity(), ReportActivityListener {
 
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                OPEN_FILE_REQUEST -> {
-                    if (Build.VERSION.SDK_INT >= 19) {
-                        if (resultData == null)
-                            return
-
-                        val clipData = resultData.clipData
-                        if (clipData != null) {
-                            val uris: Array<Uri> = Array(clipData.itemCount) {
-                                clipData.getItemAt(it).uri
-                            }
-                            AddFile().execute(*(uris))
-                        } else if (resultData.data != null) {
-                            AddFile().execute(resultData.data)
-                        }
-                    }
-                }
                 SUBSCRIBE_REQUEST -> {
                     Toast.makeText(applicationContext, R.string.thanks_text, Toast.LENGTH_SHORT).show()
                 }
@@ -532,7 +506,6 @@ class ReportListActivity : AppCompatActivity(), ReportActivityListener {
         activityReportListBinding = ActivityReportListBinding.inflate(layoutInflater)
         helloLayoutBinding = HelloLayoutBinding.inflate(layoutInflater)
 
-
         setContentView(activityReportListBinding.root)
 
         setSupportActionBar(activityReportListBinding.toolBar)
@@ -554,15 +527,15 @@ class ReportListActivity : AppCompatActivity(), ReportActivityListener {
         val viewModelFactory = Injection.provideViewModelFactory(this)
         reportModel = ViewModelProvider(this, viewModelFactory)[ReportViewModel::class.java]
 
+        getContent = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris: List<Uri>? ->
+            if (uris != null) {
+                AddFile().execute(*(uris.toTypedArray()))
+            }
+        }
+
         activityReportListBinding.addButton.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= 19) {
-                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-
-                intent.addCategory(Intent.CATEGORY_OPENABLE)
-                intent.type = "*/*"
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-
-                startActivityForResult(intent, OPEN_FILE_REQUEST)
+            if (Build.VERSION.SDK_INT >= 20) { // Official Android FileChooser is buggy on Android 4.4 (19)
+                getContent.launch("*/*")
             } else {
                 if (Environment.getExternalStorageState() in setOf(Environment.MEDIA_MOUNTED, Environment.MEDIA_MOUNTED_READ_ONLY)) {
                     val properties = DialogProperties()
@@ -592,6 +565,7 @@ class ReportListActivity : AppCompatActivity(), ReportActivityListener {
                 }
             }
         }
+
         activityReportListBinding.reportListLayout.clearBtn.setOnClickListener {
             disposable.add(reportModel.deleteAllReports()
                 .subscribeOn(Schedulers.io())
@@ -717,7 +691,6 @@ class ReportListActivity : AppCompatActivity(), ReportActivityListener {
     companion object {
         const val SHOW_REPORT_REQUEST = 20
         const val SUBSCRIBE_REQUEST = 30
-        const val OPEN_FILE_REQUEST = 40
         const val READ_EXTERNAL_STORAGE_PERMISSION_REQUEST = 50
         const val OPEN_INTENT_PROCESSED = "net.mediaarea.mediainfo.internal.tag.Intent.Processed"
     }

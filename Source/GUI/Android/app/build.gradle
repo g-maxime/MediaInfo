@@ -3,9 +3,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.devtools.ksp'
 
-import com.android.build.OutputFile
 import groovy.xml.XmlUtil
+import groovy.xml.XmlParser
 
 android {
     buildFeatures {
@@ -16,7 +17,7 @@ android {
     defaultConfig {
         applicationId "net.mediaarea.mediainfo"
         multiDexEnabled = true
-        minSdkVersion 14
+        minSdkVersion 19
         versionCode 42
         versionName "24.04"
         targetSdkVersion 34
@@ -58,6 +59,8 @@ android {
     splits {
         abi {
             enable true
+            reset()
+            include 'armeabi-v7a', 'arm64-v8a', 'x86',  'x86_64'
             universalApk true
         }
     }
@@ -73,17 +76,17 @@ android {
     }
 
     def abiCodes = ['armeabi-v7a':1, 'arm64-v8a':2, 'x86':3, 'x86_64':4]
-    android.applicationVariants.all { variant ->
+    android.applicationVariants.configureEach { variant ->
         // Assigns a different version code for each output APK.
         variant.outputs.each {
             output ->
-                def abiName = output.getFilter(OutputFile.ABI)
+                def abiName = output.getFilter('ABI')
                 output.versionCodeOverride = variant.versionCode * 10 + abiCodes.get(abiName, 0)
         }
     }
 }
 
-task copyLocales(type: DefaultTask) {
+tasks.register('copyLocales', DefaultTask) {
     def locales = [:]
 
     fileTree("../../../../Source/Resource/Plugin/Language").visit { FileVisitDetails details ->
@@ -109,7 +112,7 @@ task copyLocales(type: DefaultTask) {
         //  update translations xml
         def csv = [:]
         file(details.file).splitEachLine(";") {
-            if(it.size()==2 && it[0].size() && it[1].size()) {
+            if (it.size() == 2 && it[0].size() && it[1].size()) {
                 csv[it[0]] = it[1]
             }
         }
@@ -170,34 +173,41 @@ preBuild.dependsOn copyLocales
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'com.google.android.material:material:1.11.0-alpha03'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.preference:preference-ktx:1.2.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.2.0-alpha12'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.0-alpha13'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.3.1'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+    implementation 'androidx.startup:startup-runtime:1.1.1'
     implementation 'com.android.support:design:34.2.0'
+
+    implementation 'androidx.activity:activity-ktx:1.8.2'
+    implementation 'androidx.fragment:fragment-ktx:1.6.2'
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.5.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     // Android Room
-    implementation 'androidx.room:room-runtime:2.5.2'
-    implementation 'androidx.room:room-rxjava2:2.5.2'
-    kapt 'androidx.room:room-compiler:2.5.2'
+    implementation 'androidx.room:room-runtime:2.6.1'
+    implementation 'androidx.room:room-rxjava2:2.6.1'
+    ksp 'androidx.room:room-compiler:2.6.1'
     //RxJava
     implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     // Android Lifecycle
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    kapt "androidx.lifecycle:lifecycle-common-java8:2.6.2"
+    ksp "androidx.lifecycle:lifecycle-common-java8:2.7.0"
     // Legacy file picker
     implementation 'com.github.angads25:filepicker:1.1.1'
     // Google Billing
     implementation "com.android.billingclient:billing:6.0.1"
     implementation "com.android.billingclient:billing-ktx:6.0.1"
     // KotlinX Coroutines
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1"
     // Locales manager
     implementation 'com.github.YarikSOffice:lingver:1.2.1'
+
 }

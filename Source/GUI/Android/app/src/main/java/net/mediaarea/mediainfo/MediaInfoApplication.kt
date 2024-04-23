@@ -8,12 +8,14 @@ package net.mediaarea.mediainfo
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.multidex.MultiDexApplication
+
 
 import com.yariksoffice.lingver.Lingver
 import com.yariksoffice.lingver.store.InMemoryLocaleStore
 
 
-class MediaInfoApplication : Application() {
+class MediaInfoApplication : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
 
