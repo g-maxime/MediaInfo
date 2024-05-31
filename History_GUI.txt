@@ -12,6 +12,10 @@ Known bugs
 - Languages (other than english and French) : not all words are translated, I need translators!
 - Others? https://sourceforge.net/p/mediainfo/_list/tickets
 
+Version 24.05.1, 2024-05-30
+---------------
+x Windows GUI: fix crash at startup with Windows 10 version 1803 and below
+
 Version 24.05, 2024-05-30
 -------------
 + Italian translation updated
