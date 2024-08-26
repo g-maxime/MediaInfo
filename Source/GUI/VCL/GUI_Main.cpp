@@ -1007,6 +1007,11 @@ void __fastcall TMainF::Refresh(TTabSheet *Page)
             if (!Prefs->Config(__T("Graph_Adm_ShowChannelFormats")).empty())
                 I->Option_Static(__T("Graph_Adm_ShowChannelFormats"), Prefs->Config(__T("Graph_Adm_ShowChannelFormats")));
 
+            Page_Custom_Text->Visible=false;
+            Page_Custom_HTML->Visible=true;
+            Page_Custom_HTML->Navigate(L"about:blank");
+            FormResize(NULL);
+
             I->Option_Static(__T("Inform"), __T("Graph_Svg"));
         }
         else if (M_View_MPEG7_Strict->Checked)
