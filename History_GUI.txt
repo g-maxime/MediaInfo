@@ -12,6 +12,11 @@ Known bugs
 - Languages (other than english and French) : not all words are translated, I need translators!
 - Others? https://sourceforge.net/p/mediainfo/_list/tickets
 
+Version 24.11.1, 2024-11-09
+---------------
+x Windows GUI: Fix crashes with some specific OS configurations
+x Windows GUI: Fix HTML view not working when launched from Windows Explorer
+
 Version 24.11, 2024-11-07
 -------------
 + New Indonesian (bahasa Indonesia) translation
