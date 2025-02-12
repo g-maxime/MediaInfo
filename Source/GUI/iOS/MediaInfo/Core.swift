@@ -17,6 +17,8 @@ extension String {
 extension Notification.Name {
     static let darkModeEnabled = Notification.Name("net.mediaarea.mediainfo.ios.notifications.darkModeEnabled")
     static let darkModeDisabled = Notification.Name("net.mediaarea.mediainfo.ios.notifications.darkModeDisabled")
+    static let translateReportEnabled = Notification.Name("net.mediaarea.mediainfo.ios.notifications.translateReportEnabled")
+    static let translateReportDisabled = Notification.Name("net.mediaarea.mediainfo.ios.notifications.translateReportDisabled")
 }
 
 class Core {
@@ -60,6 +62,7 @@ class Core {
         }
         set {
             UserDefaults.standard.set(newValue, forKey: "UserLocale")
+            NotificationCenter.default.post(name: newValue ? .translateReportEnabled : .translateReportDisabled, object: nil)
         }
     }
 
