@@ -459,7 +459,7 @@ void __fastcall ThreadInternetCheck::Execute()
     if (InternetGetConnectedState(NULL, 0)==0)
         return; //No internet connexion
 
-    Ztring Url = Ztring(__T("https://MediaArea.net/mediainfo_check/changelog_"))+MediaInfo_Version_GUI+__T(".bin");
+    Ztring Url = Ztring(__T("https://gist.githubusercontent.com/g-maxime/cfec9884113623c235cc1ec12d099d12/raw/changelog.bin"));
     TNetHTTPClient* Client = new TNetHTTPClient(NULL);
     Client->Asynchronous = false;
     Client->AllowCookies = false;
