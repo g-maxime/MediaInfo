@@ -5,8 +5,8 @@ ManifestDPIAware true
 ; Some defines
 !define PRODUCT_NAME "MediaInfo"
 !define PRODUCT_PUBLISHER "MediaArea.net"
-!define PRODUCT_VERSION "25.07"
-!define PRODUCT_VERSION4 "${PRODUCT_VERSION}.0.0"
+!define PRODUCT_VERSION "25.07.1"
+!define PRODUCT_VERSION4 "${PRODUCT_VERSION}.0"
 
 ; Compression
 SetCompressor /FINAL /SOLID lzma

@@ -12,6 +12,9 @@ Known bugs
 - Languages (other than english and French) : not all words are translated, I need translators!
 - Others? https://sourceforge.net/p/mediainfo/_list/tickets
 
+Version 25.07.1, 2025-07-30
+Exif: Fix rational parsing when MEDIAINFO_TRACE_NO
+
 Version 25.07, 2025-07-29
 -------------
 + Update Italian translation
