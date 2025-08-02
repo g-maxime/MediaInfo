@@ -9,7 +9,7 @@ android {
     buildFeatures {
         viewBinding true
     }
-    compileSdk 35
+    compileSdk 36
     namespace "net.mediaarea.mediainfo"
     defaultConfig {
         applicationId "net.mediaarea.mediainfo"
@@ -17,7 +17,7 @@ android {
         minSdkVersion 21
         versionCode 50
         versionName "25.07"
-        targetSdkVersion 35
+        targetSdkVersion 36
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
