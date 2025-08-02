@@ -15,43 +15,45 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
 import kotlin.math.pow
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.DefaultLifecycleObserver
 import android.util.Log
 import android.app.Activity
 import android.app.Application
 import com.android.billingclient.api.*
 
-class SubscriptionManager private constructor(private val application: Application) : PurchasesUpdatedListener, BillingClientStateListener, LifecycleObserver {
+class SubscriptionManager private constructor(private val application: Application) : PurchasesUpdatedListener, BillingClientStateListener, DefaultLifecycleObserver {
     val ready = MutableLiveData<Boolean>()
     val subscribed = MutableLiveData<Boolean>()
     val isLifetime = MutableLiveData<Boolean>()
-    val details = MutableLiveData<SkuDetails>()
-    val lifetimeDetails = MutableLiveData<SkuDetails>()
+    val details = MutableLiveData<ProductDetails>()
+    val lifetimeDetails = MutableLiveData<ProductDetails>()
 
-    private var detailsAvailables = AtomicBoolean(false)
-    private var lifetimeDetailsAvailables = AtomicBoolean(false)
+    private var detailsAvailable = AtomicBoolean(false)
+    private var lifetimeDetailsAvailable = AtomicBoolean(false)
 
     private lateinit var billingClient: BillingClient
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    fun create() {
+    override fun onCreate(owner: LifecycleOwner) {
+        val params = PendingPurchasesParams
+            .newBuilder()
+            .enablePrepaidPlans()
+            .enableOneTimeProducts()
+            .build()
         billingClient = BillingClient.newBuilder(application.applicationContext)
-                .enablePendingPurchases()
+                .enablePendingPurchases(params)
                 .setListener(this)
                 .build()
 
-        ready.value = false
-        subscribed.value = false
-        isLifetime.value = false
+        updateState(false)
+        updateSubscribedState(false)
+        updateLifetimeState(false)
 
         billingClient.startConnection(this)
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun destroy() {
+    override fun onDestroy(owner: LifecycleOwner) {
         if (billingClient.isReady) {
             billingClient.endConnection()
         }
@@ -59,25 +61,20 @@ class SubscriptionManager private constructor(private val application: Applicati
 
     private fun updateState(newState: Boolean) {
         if (ready.value!=newState) {
-            ready.value = newState
+            ready.postValue(newState)
         }
     }
 
     private fun updateSubscribedState(newState: Boolean) {
         if (subscribed.value!=newState) {
-            subscribed.value = newState
+            subscribed.postValue(newState)
         }
     }
 
     private fun updateLifetimeState(newState: Boolean) {
         if (isLifetime.value!=newState) {
-            isLifetime.value = newState
+            isLifetime.postValue(newState)
         }
-    }
-
-    private fun isSubscriptionSupported(): Boolean {
-        val response = billingClient.isFeatureSupported(BillingClient.FeatureType.SUBSCRIPTIONS)
-        return response.responseCode==BillingClient.BillingResponseCode.OK
     }
 
     fun launchBillingFlow(activity: Activity, params: BillingFlowParams): Int {
@@ -102,12 +99,23 @@ class SubscriptionManager private constructor(private val application: Applicati
             RetryPolicies.resetConnectionRetryPolicyCounter()
 
             fun updatePurchasesTask() {
-                billingClient.queryPurchasesAsync(BillingClient.SkuType.SUBS) { result: BillingResult, purchaseList: MutableList<Purchase> ->
+                val subsParams = QueryPurchasesParams
+                    .newBuilder()
+                    .setProductType(BillingClient.ProductType.SUBS)
+                    .build()
+
+                billingClient.queryPurchasesAsync(subsParams) { result: BillingResult, purchaseList: MutableList<Purchase> ->
                     if (result.responseCode == BillingClient.BillingResponseCode.OK) {
                         handlePurchases(purchaseList)
                     }
                 }
-                billingClient.queryPurchasesAsync(BillingClient.SkuType.INAPP) { result: BillingResult, purchaseList: MutableList<Purchase> ->
+
+                val inAppParams = QueryPurchasesParams
+                    .newBuilder()
+                    .setProductType(BillingClient.ProductType.INAPP)
+                    .build()
+
+                billingClient.queryPurchasesAsync(inAppParams) { result: BillingResult, purchaseList: MutableList<Purchase> ->
                     if (result.responseCode == BillingClient.BillingResponseCode.OK) {
                         handlePurchases(purchaseList)
                     }
@@ -115,46 +123,41 @@ class SubscriptionManager private constructor(private val application: Applicati
             }
             RetryPolicies.taskExecutionRetryPolicy(billingClient, this) { updatePurchasesTask() }
 
-            if (isSubscriptionSupported()) {
-                val params = SkuDetailsParams
-                        .newBuilder()
-                        .setSkusList(listOf(application.getString(R.string.subscription_sku)))
-                        .setType(BillingClient.SkuType.SUBS)
-                        .build()
+            val params = QueryProductDetailsParams
+                .newBuilder()
+                .setProductList(
+                    listOf(
+                        QueryProductDetailsParams.Product
+                            .newBuilder()
+                            .setProductId(application.getString(R.string.subscription_sku))
+                            .setProductType(BillingClient.ProductType.SUBS)
+                            .build(),
+                        QueryProductDetailsParams.Product
+                            .newBuilder()
+                            .setProductId(application.getString(R.string.lifetime_subscription_sku))
+                            .setProductType(BillingClient.ProductType.INAPP)
+                            .build()
+                    )
+                )
+                .build()
 
-                billingClient.querySkuDetailsAsync(params) { result: BillingResult, list: List<SkuDetails>? ->
-                    if (result.responseCode == BillingClient.BillingResponseCode.OK) {
-                        list?.forEach {
-                            if (it.sku == application.getString(R.string.subscription_sku)) {
+            billingClient.queryProductDetailsAsync(params) { billingResult: BillingResult, productDetailsResult: QueryProductDetailsResult ->
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                    productDetailsResult.productDetailsList.forEach {
+                        when (it.productId) {
+                            application.getString(R.string.subscription_sku) -> {
                                 details.postValue(it)
-                                detailsAvailables.set(true)
+                                detailsAvailable.set(true)
+                            }
+                            application.getString(R.string.lifetime_subscription_sku) -> {
+                                lifetimeDetails.postValue(it)
+                                lifetimeDetailsAvailable.set(true)
                             }
                         }
-
-                        if (detailsAvailables.get() && lifetimeDetailsAvailables.get()) {
-                            ready.postValue(true)
-                        }
-                    }
-                }
-            }
-
-            val params = SkuDetailsParams
-               .newBuilder()
-               .setSkusList(listOf(application.getString(R.string.lifetime_subscription_sku)))
-               .setType(BillingClient.SkuType.INAPP)
-               .build()
-
-            billingClient.querySkuDetailsAsync(params) { result: BillingResult, list: MutableList<SkuDetails>? ->
-                if (result.responseCode == BillingClient.BillingResponseCode.OK) {
-                    list?.forEach {
-                        if (it.sku == application.getString(R.string.lifetime_subscription_sku)) {
-                            lifetimeDetails.postValue(it)
-                            lifetimeDetailsAvailables.set(true)
-                        }
                     }
 
-                    if (detailsAvailables.get() && lifetimeDetailsAvailables.get()) {
-                        ready.postValue(true)
+                    if (detailsAvailable.get() && lifetimeDetailsAvailable.get()) {
+                        updateState(true)
                     }
                 }
             }
@@ -188,14 +191,14 @@ class SubscriptionManager private constructor(private val application: Applicati
                 if (purchase.purchaseState == Purchase.PurchaseState.PENDING)
                     return
 
-                purchase.skus.forEach { sku ->
-                    when (sku) {
+                purchase.products.forEach { product ->
+                    when (product) {
                         application.getString(R.string.subscription_sku) -> {
-                            subscribed.postValue(true)
+                            updateSubscribedState(true)
                         }
                         application.getString(R.string.lifetime_subscription_sku) -> {
-                            isLifetime.postValue(true)
-                            subscribed.postValue(true)
+                            updateLifetimeState(true)
+                            updateSubscribedState(true)
                         }
                     }
                 }
@@ -205,9 +208,9 @@ class SubscriptionManager private constructor(private val application: Applicati
 
     // Retries handler
     private object RetryPolicies {
-        private const val maxRetry = 5
-        private const val taskDelay = 2000L
-        private const val baseDelayMillis = 500
+        private const val MAX_RETRY = 5
+        private const val TASK_DELAY = 2000L
+        private const val BASE_DELAY = 500
         private var retryCounter = AtomicInteger(1)
 
         fun resetConnectionRetryPolicyCounter() {
@@ -218,8 +221,8 @@ class SubscriptionManager private constructor(private val application: Applicati
             val scope = CoroutineScope(Job() + Dispatchers.Main)
             scope.launch {
                 val counter = retryCounter.getAndIncrement()
-                if (counter < maxRetry) {
-                    val waitTime: Long = (2f.pow(counter) * baseDelayMillis).toLong()
+                if (counter < MAX_RETRY) {
+                    val waitTime: Long = (2f.pow(counter) * BASE_DELAY).toLong()
                     delay(waitTime)
                     block()
                 }
@@ -231,7 +234,7 @@ class SubscriptionManager private constructor(private val application: Applicati
             scope.launch {
                 if (!billingClient.isReady) {
                     billingClient.startConnection(listener)
-                    delay(taskDelay)
+                    delay(TASK_DELAY)
                 }
                 task()
             }
