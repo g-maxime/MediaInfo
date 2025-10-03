@@ -15,7 +15,7 @@ android {
         applicationId "net.mediaarea.mediainfo"
         multiDexEnabled true
         minSdkVersion 21
-        versionCode 55
+        versionCode 17
         versionName "25.09"
         targetSdkVersion 36
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
