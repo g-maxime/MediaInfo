@@ -1,4 +1,4 @@
-%global mediainfo_version           26.01
+%global mediainfo_version           26.01.1
 %global mediainfo_version_major     26
 %global mediainfo_version_minor     01
 %global libmediainfo_version        26.01
