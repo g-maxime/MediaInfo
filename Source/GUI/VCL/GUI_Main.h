@@ -310,6 +310,8 @@ private:    // User declarations
     const UnicodeString LIGHT_MODE_STYLE = "Windows";               // Name of style for light mode;
     const UnicodeString DARK_MODE_STYLE = "Windows11 Modern Dark";  // Name of style for dark mode
     bool StartupReady = false;
+    bool Html_Disabled = false;
+    void __fastcall DisableHtmlViews();
     bool __fastcall WindowsDarkModeEnabled();
     void __fastcall ConfigTheme();
     std::wstring __fastcall InjectHTMLStyle(const wchar_t* HTMLDocument);

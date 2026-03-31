@@ -1065,7 +1065,15 @@ void __fastcall TMainF::Refresh(TTabSheet *Page)
         F.Close();
 
         //Navigate
-        Page_HTML_HTML->Navigate(const_cast<MediaInfoNameSpace::Char*>(FileName_Temp.c_str()));
+        try
+        {
+            Page_HTML_HTML->Navigate(const_cast<MediaInfoNameSpace::Char*>(FileName_Temp.c_str()));
+        }
+        catch (...)
+        {
+            DisableHtmlViews();
+            M_View_TextClick(NULL);
+        }
     }
 
     //Custom
@@ -1181,7 +1189,7 @@ void __fastcall TMainF::Refresh(TTabSheet *Page)
                 S1 = State;
         }
 
-        if (S1.size()>1 && ( !wcsncmp(S1.c_str(),L"<!DOCTYPE html>",15-1) || !wcsncmp(S1.c_str(),L"<html>",6-1) ))
+        if (S1.size()>1 && ( !wcsncmp(S1.c_str(),L"<!DOCTYPE html>",15-1) || !wcsncmp(S1.c_str(),L"<html>",6-1) ) && !Html_Disabled)
         {
             //Supposing this is HTML
             Page_Custom_Text->Visible=false;
@@ -1199,8 +1207,18 @@ void __fastcall TMainF::Refresh(TTabSheet *Page)
             F.Write(S1);
             F.Close();
             //Navigate
-            Page_Custom_HTML->Navigate(const_cast<MediaInfoNameSpace::Char*>(FileName_Temp.c_str()));
-            FormResize(NULL);
+            try
+            {
+                Page_Custom_HTML->Navigate(const_cast<MediaInfoNameSpace::Char*>(FileName_Temp.c_str()));
+                FormResize(NULL);
+            }
+            catch (...)
+            {
+                DisableHtmlViews();
+                Page_Custom_Text->Text=S1.c_str();
+                Page_Custom_Text->Visible=true;
+                Page_Custom_HTML->Visible=false;
+            }
         }
         else
         {
@@ -1459,12 +1477,37 @@ void __fastcall TMainF::M_View_TextClick(TObject *Sender)
 }
 
 //---------------------------------------------------------------------------
+void __fastcall TMainF::DisableHtmlViews()
+{
+    Html_Disabled=true;
+    Page_HTML->TabVisible=false;
+    M_View_HTML->Enabled=false;
+    M_View_HTML->Checked=false;
+    ToolBar_View_HTML->Enabled=false;
+    ToolBar_View_HTML->Checked=false;
+    M_View_Graph_Svg->Enabled=false;
+    M_View_Graph_Svg->Checked=false;
+    ToolBar_View_Graph_Svg->Enabled=false;
+    ToolBar_View_Graph_Svg->Checked=false;
+}
+
+//---------------------------------------------------------------------------
 void __fastcall TMainF::M_View_HTMLClick(TObject *Sender)
 {
+    if (Html_Disabled)
+        return;
     I->Option_Static(__T("Inform"));
     M_View_HTML->Checked=true;
     ToolBar_View_HTML->Checked=true;
-    ChangePage(Page_HTML);
+    try
+    {
+        ChangePage(Page_HTML);
+    }
+    catch (...)
+    {
+        DisableHtmlViews();
+        M_View_TextClick(NULL);
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -1526,6 +1569,8 @@ void __fastcall TMainF::M_View_NISO_Z39_87Click(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TMainF::M_View_Graph_SvgClick(TObject *Sender)
 {
+    if (Html_Disabled)
+        return;
     M_View_Graph_Svg->Checked=true;
     ToolBar_View_Graph_Svg->Checked=true;
     ChangePage(Page_Custom);
