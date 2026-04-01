@@ -49,6 +49,7 @@ TMainF *MainF;
 #include <ZenLib/OS_Utils.h>
 
 #include <filesystem> // To remove when "Quick temporary fix for translations after an update" is removed
+#include <stdexcept>
 
 using namespace MediaInfoNameSpace;
 using namespace ZenLib;
@@ -1067,6 +1068,7 @@ void __fastcall TMainF::Refresh(TTabSheet *Page)
         //Navigate
         try
         {
+            throw std::runtime_error("Try to navigate to HTML page");
             Page_HTML_HTML->Navigate(const_cast<MediaInfoNameSpace::Char*>(FileName_Temp.c_str()));
         }
         catch (...)
@@ -1209,6 +1211,7 @@ void __fastcall TMainF::Refresh(TTabSheet *Page)
             //Navigate
             try
             {
+                throw std::runtime_error("Try to navigate to HTML page");
                 Page_Custom_HTML->Navigate(const_cast<MediaInfoNameSpace::Char*>(FileName_Temp.c_str()));
                 FormResize(NULL);
             }
@@ -1501,6 +1504,7 @@ void __fastcall TMainF::M_View_HTMLClick(TObject *Sender)
     ToolBar_View_HTML->Checked=true;
     try
     {
+        throw std::runtime_error("Try to navigate to HTML page");
         ChangePage(Page_HTML);
     }
     catch (...)
