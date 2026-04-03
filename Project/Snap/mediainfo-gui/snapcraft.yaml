@@ -39,10 +39,8 @@ apps:
       - opengl
       - desktop
       - desktop-legacy
-      - home
       - network
       - gsettings
-      - removable-media
 
 parts:
   mediainfo-gui:
@@ -50,6 +48,8 @@ parts:
     source: MediaInfo
     qmake-major-version: 6
     qmake-project-file: Project/QMake/GUI/MediaInfoQt.pro
+    qmake-parameters:
+      - USE_PORTAL=1
     build-environment:
       - PATH: "/usr/lib/qt6/bin:$PATH"
     build-packages:
@@ -69,6 +69,7 @@ parts:
       - libxdot4
       - libqt6widgets6t64
       - libqt6xml6t64
+      - libqt6dbus6t64
       - libqt6quickwidgets6
       - libqt6printsupport6t64
       - libqt6webenginecore6

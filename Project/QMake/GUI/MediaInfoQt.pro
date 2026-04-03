@@ -4,6 +4,11 @@
 
 QT += core gui widgets network xml
 
+contains(USE_PORTAL, yes|1) {
+        DEFINES  += USE_PORTAL
+        QT       += dbus
+}
+
 win32 {
     DEFINES+=EDGE_WEBVIEW2_YES
 } else {
@@ -346,6 +351,10 @@ SOURCES += ../../../Source/GUI/Qt/main.cpp \
     ../../../Source/GUI/Qt/configtreetext.cpp \
     ../../../Source/GUI/Qt/editconfigtreetext.cpp
 
+contains(USE_PORTAL, yes|1) {
+    SOURCES += ../../../Source/GUI/Qt/portal_utils.cpp
+}
+
 win32 {
     SOURCES += ../../../Source/GUI/Qt/edgewebview2widget.cpp
 }
@@ -368,6 +377,10 @@ HEADERS += ../../../Source/GUI/Qt/mainwindow.h \
     ../../../Source/GUI/Qt/translate.h \
     ../../../Source/GUI/Qt/configtreetext.h \
     ../../../Source/GUI/Qt/editconfigtreetext.h
+
+contains(USE_PORTAL, yes|1) {
+    SOURCES += ../../../Source/GUI/Qt/portal_utils.h
+}
 
 win32 {
     HEADERS += ../../../Source/GUI/Qt/edgewebview2widget.h

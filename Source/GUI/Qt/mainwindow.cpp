@@ -16,6 +16,10 @@
 #include "configtreetext.h"
 #include "custom.h"
 
+#ifdef USE_PORTAL
+#include "portal_utils.h"
+#endif
+
 #include <QDropEvent>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -476,8 +480,13 @@ void MainWindow::openFiles(QStringList fileNames) {
                     continue;
         // Resolve to target if is a Windows .lnk shortcut
         QFileInfo fileInfo(fileNames[i]);
-        if (fileInfo.suffix().compare("lnk", Qt::CaseInsensitive) == 0 && !fileInfo.symLinkTarget().isEmpty())
+        if (fileInfo.suffix().compare("lnk", Qt::CaseInsensitive) == 0 && !fileInfo.symLinkTarget().isEmpty()) {
             fileNames[i] = fileInfo.symLinkTarget();
+        }
+        #ifdef USE_PORTAL
+        // Resolve portal paths to real paths if running in a sandbox
+        fileNames[i] = PortalUtils::resolvePortalPath(fileNames[i]);
+        #endif
         // Convert directory separators to native separators for file paths
         fileNames[i] = QDir::toNativeSeparators(fileNames[i]);
     }
@@ -532,6 +541,10 @@ void MainWindow::openDir(QString dirName) {
         return;
 
     //Configuring
+    #ifdef USE_PORTAL
+    // Resolve portal paths to real paths if running in a sandbox
+    dirName = PortalUtils::resolvePortalPath(dirName);
+    #endif
     dirName = QDir::toNativeSeparators(dirName);
     C->Menu_File_Open_Files_Begin(settings->value("closeBeforeOpen",true).toBool(), true);
     C->Menu_File_Open_Directory(QString2wstring(dirName));
