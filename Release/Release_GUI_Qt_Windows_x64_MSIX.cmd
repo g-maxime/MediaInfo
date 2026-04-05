@@ -49,7 +49,7 @@ signtool.exe sign /fd SHA256 /a /f %CERT_PATH% /p %CERT_PASS% /tr http://timesta
 :: add MSIX manifest and assets
 xcopy %~dp0\..\Source\Resource\Image\MSIX_Assets %~dp0\..\Source\WindowsQtPackage\Assets\ /i /e /r /y
 pushd %~dp0\..\Source\WindowsQtPackage
-makepri.exe new /pr %~dp0\..\Source\WindowsQtPackage /cf %~dp0\..\Source\WindowsQtPackage\priconfig.xml
+makepri.exe new /o /pr %~dp0\..\Source\WindowsQtPackage /cf %~dp0\..\Source\WindowsQtPackage\priconfig.xml
 popd
 xcopy %~dp0\..\Source\WindowsQtPackage %~dp0\MediaInfo_Qt_Windows_x64\ /i /e /r /y
 

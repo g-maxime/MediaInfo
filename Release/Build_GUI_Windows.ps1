@@ -65,7 +65,7 @@ Pop-Location
 ### Build: Image assets and resources ###
 xcopy "${release_directory}\..\Source\Resource\Image\MSIX_Assets" "${release_directory}\..\Source\WindowsSparsePackage\Resources\Assets\" /i /e /r /y
 Push-Location -Path "${release_directory}\..\Source\WindowsSparsePackage\Resources"
-    makepri new /pr "${release_directory}\..\Source\WindowsSparsePackage\Resources" /cf "${release_directory}\..\Source\WindowsSparsePackage\Resources\priconfig.xml"
+    makepri new /o /pr "${release_directory}\..\Source\WindowsSparsePackage\Resources" /cf "${release_directory}\..\Source\WindowsSparsePackage\Resources\priconfig.xml"
 Pop-Location
 
 ### Build: zlib BCB library ###
