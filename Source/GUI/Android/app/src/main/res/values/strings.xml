@@ -66,4 +66,8 @@
   <string name="preferences_locale_key" translatable="false">net.mediaarea.mediainfo.preferences_locale</string>
   <string name="preferences_subscribe_key" translatable="false">net.mediaarea.mediainfo.preferences_subscribe</string>
   <string name="preferences_report_translate_key" translatable="false">net.mediaarea.mediainfo.preferences_report_translate</string>
+  <string name="preferences_permissions_key" translatable="false">net.mediaarea.mediainfo.preferences_permissions</string>
+  <string name="permissions_geolocation_title" csv="Geolocation_Permission_Title">Geolocation data access</string>
+  <string name="permissions_geolocation_summary" csv="Geolocation_Permission_Summary">Photo and Video permission is needed to read geolocation metadata from media files</string>
+  <string name="permissions_geolocation_help" csv="Geolocation_Permission_Help">To enable geolocation metadata reading, follow these steps on the next screen:\n\n1. Open Permissions\n2. Select Photo and Video\n3. Choose Allow.</string>
 </resources>

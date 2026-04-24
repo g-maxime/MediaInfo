@@ -10,8 +10,10 @@ import kotlin.jvm.*
 import kotlinx.coroutines.launch
 
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.edit
 import androidx.core.net.toUri
@@ -138,15 +140,29 @@ class ReportListActivity : AppCompatActivity(), ReportActivityListener {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     if (checkSelfPermission(android.Manifest.permission.ACCESS_MEDIA_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         pendingFileUris.add(uri)
-                        ActivityCompat.requestPermissions(this@ReportListActivity,
-                            arrayOf(android.Manifest.permission.ACCESS_MEDIA_LOCATION),
-                            ACCESS_MEDIA_LOCATION_PERMISSION_REQUEST_SENDFILE)
+                        requestMediaLocationPermission(ACCESS_MEDIA_LOCATION_PERMISSION_REQUEST_SENDFILE)
                         return
                     }
                 }
             }
         }
         reportModel.addFiles(contentResolver, listOf(uri), isMultiple)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun requestMediaLocationPermission(requestCode: Int) {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.permissions_geolocation_title)
+            .setMessage(R.string.permissions_geolocation_summary)
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                ActivityCompat.requestPermissions(
+                    this@ReportListActivity,
+                    arrayOf(android.Manifest.permission.ACCESS_MEDIA_LOCATION),
+                    requestCode
+                )
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
     }
 
     private fun handleIntent(intent: Intent) {
@@ -563,9 +579,7 @@ class ReportListActivity : AppCompatActivity(), ReportActivityListener {
         activityReportListBinding.addButton.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 if (checkSelfPermission(android.Manifest.permission.ACCESS_MEDIA_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this@ReportListActivity,
-                        arrayOf(android.Manifest.permission.ACCESS_MEDIA_LOCATION),
-                        ACCESS_MEDIA_LOCATION_PERMISSION_REQUEST_OPENFILE)
+                    requestMediaLocationPermission(ACCESS_MEDIA_LOCATION_PERMISSION_REQUEST_OPENFILE)
                     return@setOnClickListener
                 }
             }
