@@ -1417,6 +1417,10 @@ TopFrontToSide;Top fronts to side
 Total;Total
 TotalNumberOfParts;Total Number Of Parts
 TotalProgrammeDuration;Total Programme Duration
+Tracelevel0;Trace level - 0
+Tracelevel5;Trace level - 5
+Tracelevel9;Trace level - 9
+Tracelevel10;Trace level - 10
 Track;Track name
 Track_Count;Track count
 TrackFormat;Track format
